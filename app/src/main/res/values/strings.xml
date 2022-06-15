@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Entertainment App</string>
+    <string name="app_title">Populars Movies</string>
+    <string name="message_loading_error">Ha ocurrido un error al cargar las peliculas</string>
+    <string name="button_text_positive_error">Reintentar</string>
+    <string name="button_text_negative_error">Salir</string>
+    <string name="message_text_empty_result">No hay resultados</string>
+    <string name="text_desc_movie_poster">Movie poster</string>
+
+</resources>

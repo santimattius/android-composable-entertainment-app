@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="GridOfMovie">
+        <item name="android:layout_width">@dimen/match_constraint</item>
+        <item name="android:layout_height">@dimen/match_constraint</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:paddingTop">@dimen/home_list_padding</item>
+        <item name="android:paddingBottom">@dimen/home_list_padding</item>
+    </style>
+
+    <style name="EmptyContent" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_empty_result</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+</resources>

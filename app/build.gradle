@@ -1,0 +1,87 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'io.gitlab.arturbosch.detekt'
+}
+
+apply from: "$rootDir/gradle/report.gradle"
+
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("./local.properties")))
+
+android {
+    compileSdkVersion Integer.valueOf(target_sdk_version)
+    buildToolsVersion build_tools_version
+
+    defaultConfig {
+        applicationId application_id + '.app'
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+        versionCode Integer.valueOf(version_code)
+        versionName version_name
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "API_KEY", localProperties['apiKey']
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            testCoverageEnabled true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11.toString()
+    }
+
+    viewBinding {
+        enabled = true
+    }
+    testOptions {
+        unitTests {
+            returnDefaultValues = true
+            includeAndroidResources = true
+        }
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+                jacoco.excludes = ['jdk.internal.*']
+            }
+        }
+    }
+}
+
+detekt {
+    config = files("${project.rootDir}/config/detekt/detekt.yml")
+    baseline = file("$rootDir/detekt-baseline.xml")
+    autoCorrect = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    kotlinCore()
+    androidCore()
+    ui()
+    lifecycle()
+    imageLoader()
+    room()
+    koin()
+
+    coroutines()
+    networking()
+
+    junit()
+    mockk()
+    robolectric()
+    androidTesting()
+}
