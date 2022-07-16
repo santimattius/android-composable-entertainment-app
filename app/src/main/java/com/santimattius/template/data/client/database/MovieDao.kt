@@ -28,7 +28,7 @@ interface MovieDao {
     fun deleteAll()
 
     @Delete
-    suspend fun delete(movies: MovieEntity)
+    suspend fun delete(movies: MovieEntity): Int
 
     @Transaction
     suspend fun deleteAndInsert(vararg movies: MovieEntity) {
@@ -37,6 +37,6 @@ interface MovieDao {
     }
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(movies: MovieEntity)
+    suspend fun update(movies: MovieEntity): Int
 
 }
