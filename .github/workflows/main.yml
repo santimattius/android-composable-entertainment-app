@@ -46,12 +46,7 @@ jobs:
         env:
           APIKEY: ${{ secrets.APIKEY }}
         run: echo apiKey="$APIKEY" > ./local.properties
-      # Execute unit tests
-#      - name: Unit Test with Android Emulator Runner
-#        uses: ReactiveCircus/android-emulator-runner@v2
-#        with:
-#          api-level: 29
-#          script: ./gradlew app:testDebugUnitTestCoverage
+
       - name: Run Tests
         run: ./gradlew app:testDebugUnitTestCoverage
 
@@ -76,18 +71,3 @@ jobs:
           name: pull-request # optional
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
-
-#  apksize:
-#    name: App Size
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: microsoft/android-app-size-diff@v1.0.5
-#        name: Android App size difference
-#        with:
-#          baseAppPath: test/assets/test.apk
-#          baseAppLabel: Base app
-#          targetAppPath: test/assets/test.apk
-#          targetAppLabel: Target app
-#          summaryOutputPath: summary.md
-#          metrics: test, installSize, arscFile, nativeLibs, dexFiles
-#          thresholds: 10, 10, 10, 10, 10

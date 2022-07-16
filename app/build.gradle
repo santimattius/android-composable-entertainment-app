@@ -1,8 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-kapt'
     id 'io.gitlab.arturbosch.detekt'
+    id 'com.google.devtools.ksp' version "$ksp_version"
 }
 
 apply from: "$rootDir/gradle/report.gradle"
@@ -46,6 +46,7 @@ android {
     viewBinding {
         enabled = true
     }
+
     testOptions {
         unitTests {
             returnDefaultValues = true
@@ -56,6 +57,12 @@ android {
                 includeNoLocationClasses = true
                 jacoco.excludes = ['jdk.internal.*']
             }
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.sourceSets.java.each {
+            it.srcDirs += "build/generated/ksp/${variant.name}/kotlin"
         }
     }
 }

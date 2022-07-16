@@ -1,6 +1,5 @@
 package com.santimattius.template.data.client.network
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -37,5 +36,4 @@ private fun Retrofit.Builder.configure(): Retrofit.Builder {
         .build()
     val moshiConverterFactory = MoshiConverterFactory.create(moshi)
     return this.addConverterFactory(moshiConverterFactory)
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
 }

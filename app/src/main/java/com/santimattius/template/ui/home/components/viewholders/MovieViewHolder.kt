@@ -10,7 +10,7 @@ import com.santimattius.template.databinding.ItemMovieBinding
 import com.santimattius.template.ui.home.models.MovieUiModel
 
 class MovieViewHolder(
-    @VisibleForTesting internal val viewBinding: ItemMovieBinding,
+    @get:VisibleForTesting internal val viewBinding: ItemMovieBinding,
 ) : RecyclerView.ViewHolder(viewBinding.root) {
 
     fun bind(item: MovieUiModel, onItemClick: (MovieUiModel) -> Unit = {}) {
