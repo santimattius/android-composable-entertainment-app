@@ -16,6 +16,9 @@ project.ext {
     constraint_layout_version = '2.1.4'
     material_version = '1.6.1'
 
+    //Compose
+    compose_version = '1.2.0-rc03'
+
     //Ktx
     core_ktx_version = '1.8.0'
     //Arch
