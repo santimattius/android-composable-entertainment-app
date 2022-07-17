@@ -36,9 +36,10 @@ project.ext {
 
     //Glide
     glide_version = '4.13.2'
+    coil_version = '2.1.0'
 
     //DI
-    koin_version= '3.2.0'
+    koin_version = '3.2.0'
 
     jacoco_version = '0.8.8'
     detekt_version = '1.21.0'

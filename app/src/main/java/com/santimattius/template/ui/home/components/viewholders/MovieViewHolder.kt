@@ -1,39 +1,43 @@
 package com.santimattius.template.ui.home.components.viewholders
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.VisibleForTesting
-import androidx.core.view.isVisible
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.recyclerview.widget.RecyclerView
-import com.santimattius.template.core.presentation.load
-import com.santimattius.template.databinding.ItemMovieBinding
+import com.google.android.material.composethemeadapter.MdcTheme
+import com.santimattius.template.ui.home.components.MovieView
 import com.santimattius.template.ui.home.models.MovieUiModel
 
 class MovieViewHolder(
-    @get:VisibleForTesting internal val viewBinding: ItemMovieBinding,
-) : RecyclerView.ViewHolder(viewBinding.root) {
+    internal val composeView: ComposeView,
+) : RecyclerView.ViewHolder(composeView) {
+
+    init {
+        composeView.setViewCompositionStrategy(
+            strategy = ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+        )
+    }
 
     fun bind(item: MovieUiModel, onItemClick: (MovieUiModel) -> Unit = {}) {
-        with(viewBinding) {
-            imageLoader.isVisible = true
-            imageMovie.load(item.imageUrl) {
-                imageLoader.isVisible = false
+        composeView.setContent {
+            MdcTheme {
+                MovieView(
+                    movie = item,
+                    modifier = Modifier.clickable {
+                        onItemClick(item)
+                    }
+                )
             }
-            imageMovie.contentDescription = item.title
-            itemRootContainer.setOnClickListener { onItemClick(item) }
         }
     }
 
     companion object {
 
         fun from(parent: ViewGroup): MovieViewHolder {
-            val inflater = LayoutInflater.from(parent.context)
-            val viewBinding = ItemMovieBinding.inflate(
-                inflater,
-                parent,
-                false
-            )
-            return MovieViewHolder(viewBinding)
+            val composeView = ComposeView(parent.context)
+            return MovieViewHolder(composeView)
         }
     }
 }

@@ -16,4 +16,8 @@ class PopularMoviesAdapter(private val onItemClick: (MovieUiModel) -> Unit = {})
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.bind(getItem(position), onItemClick)
     }
+
+    override fun onViewRecycled(holder: MovieViewHolder) {
+        holder.composeView.disposeComposition()
+    }
 }

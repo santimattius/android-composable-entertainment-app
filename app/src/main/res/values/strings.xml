@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Entertainment App</string>
+    <string name="app_name">Entertainment Composable App</string>
     <string name="app_title">Populars Movies</string>
     <string name="message_loading_error">Ha ocurrido un error al cargar las peliculas</string>
     <string name="button_text_positive_error">Reintentar</string>

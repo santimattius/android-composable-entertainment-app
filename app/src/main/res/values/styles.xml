@@ -6,6 +6,8 @@
         <item name="android:layout_height">@dimen/match_constraint</item>
         <item name="android:clipToPadding">false</item>
         <item name="android:paddingTop">@dimen/home_list_padding</item>
+        <item name="android:paddingStart">@dimen/home_list_padding</item>
+        <item name="android:paddingEnd">@dimen/home_list_padding</item>
         <item name="android:paddingBottom">@dimen/home_list_padding</item>
     </style>
 
