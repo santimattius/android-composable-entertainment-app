@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.composethemeadapter.MdcTheme
 import com.santimattius.template.ui.home.components.MovieView
 import com.santimattius.template.ui.home.models.MovieUiModel
 
@@ -14,17 +15,21 @@ class MovieViewHolder(
 ) : RecyclerView.ViewHolder(composeView) {
 
     init {
-        composeView.setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        composeView.setViewCompositionStrategy(
+            strategy = ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+        )
     }
 
     fun bind(item: MovieUiModel, onItemClick: (MovieUiModel) -> Unit = {}) {
         composeView.setContent {
-            MovieView(
-                movie = item,
-                modifier = Modifier.clickable {
-                    onItemClick(item)
-                }
-            )
+            MdcTheme {
+                MovieView(
+                    movie = item,
+                    modifier = Modifier.clickable {
+                        onItemClick(item)
+                    }
+                )
+            }
         }
     }
 
