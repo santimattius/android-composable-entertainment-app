@@ -8,10 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.santimattius.template.ui.components.openLink
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@ExperimentalLifecycleComposeApi
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModel()

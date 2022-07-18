@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ExperimentalComposeApi
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -17,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.santimattius.template.R
@@ -25,13 +28,14 @@ import com.santimattius.template.ui.home.components.MovieView
 import com.santimattius.template.ui.home.models.HomeState
 import com.santimattius.template.ui.home.models.MovieUiModel
 
+@ExperimentalLifecycleComposeApi
 @Composable
 fun HomeRoute(
     homeViewModel: HomeViewModel,
     onMovieClick: (MovieUiModel) -> Unit,
     onBack: () -> Unit,
 ) {
-    val state by homeViewModel.state.collectAsState()
+    val state by homeViewModel.state.collectAsStateWithLifecycle()
 
     HomeScreen(
         state = state,
