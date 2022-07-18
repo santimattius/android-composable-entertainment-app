@@ -58,7 +58,9 @@ private fun HomeScreen(
         when (state) {
             HomeState.Error -> {
                 ErrorDialog(
-                    message = stringResource(R.string.message_loading_error),
+                    message = stringResource(
+                        id = R.string.message_loading_error
+                    ),
                     positiveAction = DialogAction(text = stringResource(R.string.button_text_positive_error)) {
                         onRefresh()
                     },
@@ -68,10 +70,7 @@ private fun HomeScreen(
                 )
             }
             HomeState.Loading -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize()
-                ) {
+                Center {
                     CircularProgressIndicator(
                         color = MaterialTheme.colors.secondary,
                         modifier = Modifier.size(32.dp)
@@ -80,10 +79,7 @@ private fun HomeScreen(
             }
             is HomeState.Data -> {
                 if (state.values.isEmpty()) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
+                    Center {
                         Text(text = stringResource(id = R.string.message_text_empty_result))
                     }
                 } else {
@@ -138,4 +134,17 @@ fun ErrorDialog(
         },
         text = { Text(text = message) }
     )
+}
+
+@Composable
+fun Center(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.fillMaxSize(),
+    ) {
+        content()
+    }
 }

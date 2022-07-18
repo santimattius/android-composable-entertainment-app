@@ -34,9 +34,13 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun Fragment.composeView(content: @Composable () -> Unit): ComposeView {
+    private fun Fragment.composeView(
+        content: @Composable () -> Unit,
+    ): ComposeView {
         return ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setViewCompositionStrategy(
+                strategy = ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+            )
             setContent {
                 MdcTheme(content = content)
             }
