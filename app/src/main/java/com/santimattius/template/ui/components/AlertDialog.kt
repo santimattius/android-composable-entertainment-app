@@ -1,4 +1,4 @@
-package com.santimattius.template.core.presentation
+package com.santimattius.template.ui.components
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog as AndroidAlertDialog

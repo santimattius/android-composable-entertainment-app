@@ -40,7 +40,7 @@ class HomeViewModel(
     }
 
     fun refresh() {
-        _state.postValue(HomeState.Refreshing)
+        _state.postValue(HomeState.Loading)
         fetch()
     }
 

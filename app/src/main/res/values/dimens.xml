@@ -10,4 +10,6 @@
     <dimen name="card_text_margin">8dp</dimen>
     <dimen name="text_size_empty_result">24sp</dimen>
     <dimen name="item_movie_padding">6dp</dimen>
+    <dimen name="item_min_width">180dp</dimen>
+    <dimen name="x_small">4dp</dimen>
 </resources>

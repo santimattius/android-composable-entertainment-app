@@ -4,96 +4,42 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.VisibleForTesting
-import androidx.core.view.isVisible
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import com.santimattius.template.R
-import com.santimattius.template.core.presentation.DialogAction
-import com.santimattius.template.core.presentation.openLink
-import com.santimattius.template.core.presentation.showDialog
-import com.santimattius.template.databinding.PopularMoviesFragmentBinding
-
-import com.santimattius.template.ui.home.components.PopularMoviesAdapter
-import com.santimattius.template.ui.home.models.HomeState
+import com.google.android.material.composethemeadapter.MdcTheme
+import com.santimattius.template.ui.components.openLink
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModel()
 
-    private val homeAdapter: PopularMoviesAdapter by lazy {
-        PopularMoviesAdapter { openLink(it.imageUrl) }
-    }
-
-    @VisibleForTesting
-    internal lateinit var viewBinding: PopularMoviesFragmentBinding
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        viewBinding = PopularMoviesFragmentBinding.inflate(inflater, container, false).apply {
-            with(this.gridOfMovies) {
-                this.layoutManager = GridLayoutManager(this.context, SPAN_ITEMS)
-                this.adapter = homeAdapter
-            }
-        }
-        return viewBinding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.state.observe(viewLifecycleOwner, ::onStateChange)
-        viewBinding.swipeContainer.setOnRefreshListener {
-            viewModel.refresh()
+        return composeView {
+            HomeRoute(
+                homeViewModel = viewModel,
+                onMovieClick = {
+                    openLink(it.imageUrl)
+                },
+                onBack = {
+                    requireActivity().finish()
+                }
+            )
         }
     }
 
-    private fun onStateChange(state: HomeState) {
-        when (state) {
-            is HomeState.Data -> {
-                loading(visible = false)
-                viewBinding.textEmptyResult.isVisible = state.values.isEmpty()
-                homeAdapter.submitList(state.values)
+    private fun Fragment.composeView(content: @Composable () -> Unit): ComposeView {
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                MdcTheme(content = content)
             }
-            HomeState.Error -> {
-                loading(visible = false)
-                showError()
-            }
-            HomeState.Loading -> {
-                loading(visible = true)
-            }
-            HomeState.Refreshing -> refresh(true)
-            HomeState.Completed -> refresh(false)
         }
-    }
-
-    private fun refresh(refreshing: Boolean) = with(viewBinding.swipeContainer) {
-        this.isRefreshing = refreshing
-    }
-
-    private fun showError() {
-        showDialog(
-            message = getString(R.string.message_loading_error),
-            positiveAction = DialogAction(text = getString(R.string.button_text_positive_error)) {
-                viewModel.refresh()
-            },
-            negativeAction = DialogAction(text = getString(R.string.button_text_negative_error)) {
-                requireActivity().finish()
-            }
-        )
-    }
-
-    private fun loading(visible: Boolean) = run {
-        if (viewBinding.swipeContainer.isRefreshing) {
-            viewBinding.swipeContainer.isRefreshing = false
-        }
-        viewBinding.homeProgressBar.isVisible = visible
-    }
-
-    companion object {
-        private const val SPAN_ITEMS = 2
     }
 }
