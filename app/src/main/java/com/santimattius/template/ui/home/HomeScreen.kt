@@ -10,8 +10,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -31,7 +31,7 @@ fun HomeRoute(
     onMovieClick: (MovieUiModel) -> Unit,
     onBack: () -> Unit,
 ) {
-    val state by homeViewModel.state.observeAsState(HomeState.Loading)
+    val state by homeViewModel.state.collectAsState()
 
     HomeScreen(
         state = state,
@@ -49,14 +49,14 @@ private fun HomeScreen(
     onBack: () -> Unit,
 ) {
     val swipeRefreshState = rememberSwipeRefreshState(
-        isRefreshing = state is HomeState.Loading
+        isRefreshing = state.isRefreshing
     )
     SwipeRefresh(
         state = swipeRefreshState,
         onRefresh = onRefresh,
     ) {
-        when (state) {
-            HomeState.Error -> {
+        when {
+            state.hasError -> {
                 ErrorDialog(
                     message = stringResource(R.string.message_loading_error),
                     positiveAction = DialogAction(text = stringResource(R.string.button_text_positive_error)) {
@@ -67,7 +67,7 @@ private fun HomeScreen(
                     }
                 )
             }
-            HomeState.Loading -> {
+            state.isLoading -> {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxSize()
@@ -78,8 +78,8 @@ private fun HomeScreen(
                     )
                 }
             }
-            is HomeState.Data -> {
-                if (state.values.isEmpty()) {
+            else -> {
+                if (state.data.isEmpty()) {
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier.fillMaxSize()
@@ -88,7 +88,7 @@ private fun HomeScreen(
                     }
                 } else {
                     MovieGridView(
-                        movies = state.values,
+                        movies = state.data,
                         onMovieClick = onMovieClick
                     )
                 }
