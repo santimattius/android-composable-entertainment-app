@@ -10,8 +10,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ExperimentalComposeApi
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,7 +60,9 @@ private fun HomeScreen(
         when {
             state.hasError -> {
                 ErrorDialog(
-                    message = stringResource(R.string.message_loading_error),
+                    message = stringResource(
+                        id = R.string.message_loading_error
+                    ),
                     positiveAction = DialogAction(text = stringResource(R.string.button_text_positive_error)) {
                         onRefresh()
                     },
@@ -72,10 +72,7 @@ private fun HomeScreen(
                 )
             }
             state.isLoading -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize()
-                ) {
+                Center {
                     CircularProgressIndicator(
                         color = MaterialTheme.colors.secondary,
                         modifier = Modifier.size(32.dp)
@@ -84,10 +81,7 @@ private fun HomeScreen(
             }
             else -> {
                 if (state.data.isEmpty()) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
+                    Center {
                         Text(text = stringResource(id = R.string.message_text_empty_result))
                     }
                 } else {
@@ -142,4 +136,17 @@ fun ErrorDialog(
         },
         text = { Text(text = message) }
     )
+}
+
+@Composable
+fun Center(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.fillMaxSize(),
+    ) {
+        content()
+    }
 }
