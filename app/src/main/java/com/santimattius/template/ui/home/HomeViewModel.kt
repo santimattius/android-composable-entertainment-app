@@ -69,7 +69,7 @@ class HomeViewModel(
             fetchPopularMovies().onSuccess { popularMovies ->
                 notify(popularMovies)
             }.onFailure {
-                _state.update { it.copy(hasError = true) }
+                _state.update { it.copy(isLoading = false, isRefreshing = false, hasError = true) }
             }
         }
     }
