@@ -6,9 +6,9 @@ import com.santimattius.template.domain.usecases.GetPopularMovies
 import com.santimattius.template.ui.home.HomeViewModel
 import com.santimattius.template.ui.home.models.HomeState
 import com.santimattius.template.utils.MainCoroutinesTestRule
-import com.santimattius.template.utils.getOrAwaitValue
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual
 import org.junit.Rule
@@ -30,7 +30,11 @@ class HomeViewModelTest {
 
         val viewModel = HomeViewModel(userCase, mockk())
 
-        assertThat(viewModel.state.getOrAwaitValue(), IsEqual(HomeState.Data(emptyList())))
+        runTest {
+            val state = viewModel.state.value
+            assertThat(state, IsEqual(HomeState(data = emptyList())))
+        }
+
     }
 
     @Test
@@ -40,8 +44,10 @@ class HomeViewModelTest {
             GetPopularMovies(repository = FakeMovieRepository(answers = { throw TestException() }))
 
         val viewModel = HomeViewModel(userCase, mockk())
-
-        assertThat(viewModel.state.getOrAwaitValue(), IsEqual(HomeState.Error))
+        runTest {
+            val state = viewModel.state.value
+            assertThat(state, IsEqual(HomeState(hasError = true)))
+        }
     }
 
     @Test
@@ -55,7 +61,10 @@ class HomeViewModelTest {
 
         viewModel.refresh()
 
-        assertThat(viewModel.state.getOrAwaitValue(), IsEqual(HomeState.Error))
+        runTest {
+            val state = viewModel.state.value
+            assertThat(state, IsEqual(HomeState(hasError = true)))
+        }
     }
 
     class TestException : Throwable()
