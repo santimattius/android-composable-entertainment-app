@@ -11,12 +11,13 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.santimattius.template.R
@@ -25,13 +26,14 @@ import com.santimattius.template.ui.home.components.MovieView
 import com.santimattius.template.ui.home.models.HomeState
 import com.santimattius.template.ui.home.models.MovieUiModel
 
+@ExperimentalLifecycleComposeApi
 @Composable
 fun HomeRoute(
     homeViewModel: HomeViewModel,
     onMovieClick: (MovieUiModel) -> Unit,
     onBack: () -> Unit,
 ) {
-    val state by homeViewModel.state.observeAsState(HomeState.Loading)
+    val state by homeViewModel.state.collectAsStateWithLifecycle()
 
     HomeScreen(
         state = state,
@@ -49,14 +51,14 @@ private fun HomeScreen(
     onBack: () -> Unit,
 ) {
     val swipeRefreshState = rememberSwipeRefreshState(
-        isRefreshing = state is HomeState.Loading
+        isRefreshing = state.isRefreshing
     )
     SwipeRefresh(
         state = swipeRefreshState,
         onRefresh = onRefresh,
     ) {
-        when (state) {
-            HomeState.Error -> {
+        when {
+            state.hasError -> {
                 ErrorDialog(
                     message = stringResource(
                         id = R.string.message_loading_error
@@ -69,7 +71,7 @@ private fun HomeScreen(
                     }
                 )
             }
-            HomeState.Loading -> {
+            state.isLoading -> {
                 Center {
                     CircularProgressIndicator(
                         color = MaterialTheme.colors.secondary,
@@ -77,14 +79,14 @@ private fun HomeScreen(
                     )
                 }
             }
-            is HomeState.Data -> {
-                if (state.values.isEmpty()) {
+            else -> {
+                if (state.data.isEmpty()) {
                     Center {
                         Text(text = stringResource(id = R.string.message_text_empty_result))
                     }
                 } else {
                     MovieGridView(
-                        movies = state.values,
+                        movies = state.data,
                         onMovieClick = onMovieClick
                     )
                 }

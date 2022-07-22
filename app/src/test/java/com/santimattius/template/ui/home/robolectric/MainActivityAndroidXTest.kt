@@ -1,12 +1,15 @@
 package com.santimattius.template.ui.home.robolectric
 
+
 import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.santimattius.template.R
 import com.santimattius.template.data.dtoToDomain
 import com.santimattius.template.domain.repositories.MovieRepository
 import com.santimattius.template.ui.home.HomeFragment
@@ -22,6 +25,7 @@ import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.robolectric.annotation.Config
 
+@ExperimentalLifecycleComposeApi
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @Config(
@@ -50,12 +54,12 @@ class MainActivityAndroidXTest : KoinTest {
     @Test
     fun `verify first movie is spider-man`() {
 
-        val scenario = launchFragmentInContainer<HomeFragment>()
+        val scenario =
+            launchFragmentInContainer<HomeFragment>(themeResId = R.style.Theme_EntertainmentApp)
 
         scenario.onFragment {
             composeTestRule
                 .onNodeWithTag("Spider-Man: No Way Home").assertIsDisplayed()
-
         }
     }
 }

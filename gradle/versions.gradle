@@ -24,7 +24,8 @@ project.ext {
     //Ktx
     core_ktx_version = '1.8.0'
     //Arch
-    lifecycle_ktx_version = '2.5.0'
+    lifecycle_version = '2.6.0-alpha01'
+    lifecycle_compose_version = '2.6.0-alpha01'
 
     //Retrofit
     retrofit_version = '2.9.0'
