@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
             HomeRoute(
                 homeViewModel = viewModel,
                 onMovieClick = {
-                    openLink(it.imageUrl)
+                    requireContext().openLink(it.imageUrl)
                 },
                 onBack = {
                     requireActivity().finish()
