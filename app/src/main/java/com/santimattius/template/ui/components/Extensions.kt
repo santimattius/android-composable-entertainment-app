@@ -17,8 +17,9 @@ import com.santimattius.template.ui.components.AlertDialog.Companion.alertDialog
  * open link in to browser
  */
 fun Fragment.openLink(url: String) {
-    if (!url.startsWith("http://") && !url.startsWith("https://")) return
+    //if (!url.startsWith("http://") && !url.startsWith("https://")) return
     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     this.startActivity(browserIntent)
 }
 
