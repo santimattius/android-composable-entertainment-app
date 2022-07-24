@@ -36,11 +36,19 @@ class MovieDetailViewModel(
         job = viewModelScope.launch {
             val movie = findMovie(id)
             _state.update {
-                it.copy(
-                    isLoading = false,
-                    hasError = movie == null,
-                    data = movie
-                )
+                if (movie == null){
+                    it.copy(
+                        isLoading = false,
+                        hasError = true
+                    )
+                }else{
+                    it.copy(
+                        isLoading = false,
+                        hasError = false,
+                        data = movie
+                    )
+                }
+
             }
         }
     }
