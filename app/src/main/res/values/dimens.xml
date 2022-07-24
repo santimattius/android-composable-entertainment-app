@@ -12,4 +12,7 @@
     <dimen name="item_movie_padding">6dp</dimen>
     <dimen name="item_min_width">180dp</dimen>
     <dimen name="x_small">4dp</dimen>
+    <dimen name="medium">6dp</dimen>
+    <dimen name="none">0dp</dimen>
+    <dimen name="small">4dp</dimen>
 </resources>

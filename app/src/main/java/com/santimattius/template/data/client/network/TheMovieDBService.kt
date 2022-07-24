@@ -15,6 +15,13 @@ interface TheMovieDBService {
         @Query("page") page: Int,
     ): Response<MovieDto>
 
+    @GET("/{version}/movie/{id}")
+    suspend fun getMovie(
+        @Path("version") version: Int,
+        @Path("id") id: Int,
+    ): MovieDto
+
+
     @GET("/{version}/tv/popular")
     suspend fun getTvPopular(
         @Path("version") version: Int,

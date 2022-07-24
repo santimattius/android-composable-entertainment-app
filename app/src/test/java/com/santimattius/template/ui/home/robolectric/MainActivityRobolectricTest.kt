@@ -54,7 +54,8 @@ class MainActivityRobolectricTest : KoinTest {
         // Launch our Activity
         ActivityScenario.launch(MainActivity::class.java).use {
             composeTestRule
-                .onNodeWithTag("Spider-Man: No Way Home").assertIsDisplayed()
+                .onNodeWithTag("Spider-Man: No Way Home")
+                .assertIsDisplayed()
         }
     }
 }

@@ -2,22 +2,20 @@ package com.santimattius.template.data.datasources.implementation
 
 import com.santimattius.template.data.client.network.TheMovieDBService
 import com.santimattius.template.data.datasources.RemoteDataSource
-import com.santimattius.template.data.entities.MovieDto as TheMovieDbMovie
 
 internal class MovieDataSource(
     private val service: TheMovieDBService,
 ) : RemoteDataSource {
 
     @Suppress("TooGenericExceptionCaught")
-    override suspend fun getPopularMovies(): Result<List<TheMovieDbMovie>> {
-        return try {
-            val response = service.getMoviePopular(version = DEFAULT_VERSION, page = SINGLE_PAGE)
-            Result.success(response.results)
-        } catch (ex: Throwable) {
-            Result.failure(ex)
-        }
+    override suspend fun getPopularMovies() = runCatching {
+        val response = service.getMoviePopular(version = DEFAULT_VERSION, page = SINGLE_PAGE)
+        response.results
     }
 
+    override suspend fun findMovie(id: Int) = runCatching {
+        service.getMovie(version = DEFAULT_VERSION, id = id)
+    }
 
     companion object {
         private const val SINGLE_PAGE = 1

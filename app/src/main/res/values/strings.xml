@@ -6,5 +6,7 @@
     <string name="button_text_negative_error">Salir</string>
     <string name="message_text_empty_result">No hay resultados</string>
     <string name="text_desc_movie_poster">Movie poster</string>
+    <string name="back">Back</string>
+    <string name="desc_nav_up">navigation up</string>
 
 </resources>

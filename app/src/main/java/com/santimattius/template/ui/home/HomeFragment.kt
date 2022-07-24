@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.santimattius.template.ui.components.openLink
+import com.santimattius.template.ui.components.navigateToDeeplink
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalLifecycleComposeApi
@@ -27,7 +27,8 @@ class HomeFragment : Fragment() {
             HomeRoute(
                 homeViewModel = viewModel,
                 onMovieClick = {
-                    requireContext().openLink(it.imageUrl)
+                    val deepLink = "app://movie/${it.id}"
+                    navigateToDeeplink(deepLink)
                 },
                 onBack = {
                     requireActivity().finish()

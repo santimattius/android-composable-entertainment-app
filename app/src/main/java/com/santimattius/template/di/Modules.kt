@@ -11,7 +11,9 @@ import com.santimattius.template.data.datasources.implementation.RoomDataSource
 import com.santimattius.template.data.repositories.TMDbRepository
 import com.santimattius.template.domain.repositories.MovieRepository
 import com.santimattius.template.domain.usecases.FetchPopularMovies
+import com.santimattius.template.domain.usecases.FindMovie
 import com.santimattius.template.domain.usecases.GetPopularMovies
+import com.santimattius.template.ui.detail.MovieDetailViewModel
 import com.santimattius.template.ui.home.HomeViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -28,6 +30,12 @@ private val presentationModule = module {
             fetchPopularMovies = get<FetchPopularMovies>()
         )
     }
+    viewModel {
+        MovieDetailViewModel(
+            handle = get(),
+            findMovie = get()
+        )
+    }
 }
 
 /**
@@ -36,6 +44,7 @@ private val presentationModule = module {
 private val domainModule = module {
     factory { GetPopularMovies(repository = get<MovieRepository>()) }
     factory { FetchPopularMovies(repository = get<MovieRepository>()) }
+    factory { FindMovie(repository = get<MovieRepository>()) }
 }
 
 /**
@@ -61,4 +70,5 @@ private val theMovieDBModule = module {
     single<TheMovieDBService> { service(key = get(named(API_KEY_NAMED))) }
 }
 
-internal val moduleDefinitions = listOf(presentationModule, domainModule, dataModule, theMovieDBModule)
+internal val moduleDefinitions =
+    listOf(presentationModule, domainModule, dataModule, theMovieDBModule)

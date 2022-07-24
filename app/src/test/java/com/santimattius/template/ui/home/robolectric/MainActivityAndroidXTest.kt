@@ -59,7 +59,8 @@ class MainActivityAndroidXTest : KoinTest {
 
         scenario.onFragment {
             composeTestRule
-                .onNodeWithTag("Spider-Man: No Way Home").assertIsDisplayed()
+                .onNodeWithTag("Spider-Man: No Way Home")
+                .assertIsDisplayed()
         }
     }
 }

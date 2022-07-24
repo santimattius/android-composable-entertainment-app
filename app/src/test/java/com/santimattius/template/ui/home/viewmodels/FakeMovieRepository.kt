@@ -11,4 +11,8 @@ class FakeMovieRepository(
     override suspend fun getPopular() = answers()
 
     override suspend fun fetchPopular() = result()
+
+    override suspend fun findMovie(id: Int): Movie? {
+        return getPopular().firstOrNull { it.id == id }
+    }
 }
