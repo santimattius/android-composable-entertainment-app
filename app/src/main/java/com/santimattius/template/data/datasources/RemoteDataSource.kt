@@ -4,4 +4,5 @@ import com.santimattius.template.data.entities.MovieDto
 
 interface RemoteDataSource {
     suspend fun getPopularMovies(): Result<List<MovieDto>>
+    suspend fun findMovie(id: Int): Result<MovieDto>
 }

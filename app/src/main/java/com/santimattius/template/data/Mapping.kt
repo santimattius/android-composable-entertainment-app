@@ -10,15 +10,15 @@ import com.santimattius.template.domain.entities.Movie
  * @return movie domain model
  */
 internal fun List<MovieEntity>.entityToDomain(): List<Movie> {
-    return this.map {
-        Movie(
-            id = it.id,
-            title = it.title,
-            overview = it.overview,
-            poster = it.poster
-        )
-    }
+    return this.map { it.entityToDomain() }
 }
+
+internal fun MovieEntity.entityToDomain() = Movie(
+    id = this.id,
+    title = this.title,
+    overview = this.overview,
+    poster = this.poster
+)
 
 /**
  * map dto to domain model
@@ -26,14 +26,16 @@ internal fun List<MovieEntity>.entityToDomain(): List<Movie> {
  * @return movie domain model
  */
 internal fun List<MovieDto>.dtoToDomain(): List<Movie> {
-    return map {
-        Movie(
-            id = it.id,
-            overview = it.overview,
-            title = it.title,
-            poster = it.poster
-        )
-    }
+    return map { it.dtoToDomain() }
+}
+
+internal fun MovieDto.dtoToDomain(): Movie {
+    return Movie(
+        id = this.id,
+        overview = this.overview,
+        title = this.title,
+        poster = this.poster
+    )
 }
 
 internal fun List<MovieDto>.dtoToEntity(): List<MovieEntity> {

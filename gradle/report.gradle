@@ -45,6 +45,9 @@ ext.excludes = [
         '**/domain/entities/*.*',
         '**/models/*.*',
         '**/client/database/*.*',
+        '**/client/network/*.*',
+        '**/di/*.*',
+        '**/ui/components/*.*',
         '**/MappingKt.class',
 ]
 

@@ -2,6 +2,7 @@ package com.santimattius.template.data.repositories
 
 import com.santimattius.template.data.datasources.LocalDataSource
 import com.santimattius.template.data.datasources.RemoteDataSource
+import com.santimattius.template.data.dtoToDomain
 import com.santimattius.template.data.dtoToEntity
 import com.santimattius.template.data.entityToDomain
 import com.santimattius.template.domain.entities.Movie
@@ -26,4 +27,16 @@ internal class TMDbRepository(
     }, onFailure = {
         Result.failure(RefreshMovieFailed())
     })
+
+    override suspend fun findMovie(id: Int): Movie? {
+        return localDataSource.find(id).fold(
+            onSuccess = {
+                it.entityToDomain()
+            },
+            onFailure = {
+                val result = remoteDataSource.findMovie(id)
+                result.getOrNull()?.dtoToDomain()
+            }
+        )
+    }
 }
