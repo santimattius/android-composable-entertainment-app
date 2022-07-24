@@ -17,7 +17,7 @@ import coil.compose.SubcomposeAsyncImage
 import com.santimattius.template.R
 import com.santimattius.template.ui.home.models.MovieUiModel
 
-const val IMAGE_ASPECT_RATIO = 0.67f
+private const val IMAGE_ASPECT_RATIO = 0.67f
 
 @Composable
 fun MovieView(movie: MovieUiModel, modifier: Modifier = Modifier) {
