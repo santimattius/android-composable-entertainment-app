@@ -31,7 +31,7 @@ import org.koin.androidx.compose.getViewModel
 fun HomeRoute(
     homeViewModel: HomeViewModel = getViewModel(),
     onMovieClick: (MovieUiModel) -> Unit,
-    onBack: () -> Unit,
+    navigationUp: () -> Unit,
 ) {
     val state by homeViewModel.state.collectAsStateWithLifecycle()
 
@@ -39,7 +39,7 @@ fun HomeRoute(
         state = state,
         onMovieClick = onMovieClick,
         onRefresh = homeViewModel::refresh,
-        onBack = onBack
+        navigationUp = navigationUp
     )
 }
 
@@ -48,7 +48,7 @@ private fun HomeScreen(
     state: HomeState,
     onMovieClick: (MovieUiModel) -> Unit,
     onRefresh: () -> Unit,
-    onBack: () -> Unit,
+    navigationUp: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -61,7 +61,7 @@ private fun HomeScreen(
             state = state,
             onMovieClick = onMovieClick,
             onRefresh = onRefresh,
-            onBack = onBack
+            navigationUp = navigationUp
         )
     }
 }
@@ -71,7 +71,7 @@ private fun HomeContent(
     state: HomeState,
     onMovieClick: (MovieUiModel) -> Unit,
     onRefresh: () -> Unit,
-    onBack: () -> Unit,
+    navigationUp: () -> Unit,
 ) {
     val swipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = state.isRefreshing
@@ -90,7 +90,7 @@ private fun HomeContent(
                         onRefresh()
                     },
                     negativeAction = DialogAction(text = stringResource(R.string.button_text_negative_error)) {
-                        onBack()
+                        navigationUp()
                     }
                 )
             }

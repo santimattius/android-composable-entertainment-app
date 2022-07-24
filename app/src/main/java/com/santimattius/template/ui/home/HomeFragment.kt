@@ -28,9 +28,9 @@ class HomeFragment : Fragment() {
                 homeViewModel = viewModel,
                 onMovieClick = {
                     val deepLink = "app://movie/${it.id}"
-                    navigateToDeeplink(deepLink)
+                    requireContext().navigateToDeeplink(deepLink)
                 },
-                onBack = {
+                navigationUp = {
                     requireActivity().finish()
                 }
             )

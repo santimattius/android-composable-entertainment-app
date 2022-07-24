@@ -2,12 +2,9 @@ package com.santimattius.template.ui.home
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionContext
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
-import com.santimattius.template.EntertainmentApplication
-import com.santimattius.template.ui.components.openLink
+import com.santimattius.template.ui.components.content
+import com.santimattius.template.ui.components.navigateToDeeplink
 
 @ExperimentalLifecycleComposeApi
 class MainActivity : ComponentActivity() {
@@ -17,23 +14,13 @@ class MainActivity : ComponentActivity() {
         content {
             HomeRoute(
                 onMovieClick = {
-                    openLink(it.imageUrl)
+                    val deepLink = "app://movie/${it.id}"
+                    navigateToDeeplink(deepLink)
                 },
-                onBack = {
+                navigationUp = {
                     finish()
                 }
             )
-        }
-    }
-}
-
-fun ComponentActivity.content(
-    parent: CompositionContext? = null,
-    content: @Composable () -> Unit,
-) {
-    setContent(parent) {
-        EntertainmentApplication {
-            content()
         }
     }
 }

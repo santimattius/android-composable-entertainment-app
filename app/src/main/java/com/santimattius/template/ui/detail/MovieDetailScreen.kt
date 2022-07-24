@@ -19,7 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import com.santimattius.template.R
 import com.santimattius.template.domain.entities.Movie
-import com.santimattius.template.ui.home.Center
+import com.santimattius.template.ui.home.components.Center
 
 @ExperimentalLifecycleComposeApi
 @Composable
