@@ -12,9 +12,9 @@ class RoomDataSource(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : LocalDataSource {
 
-    override suspend fun getAll(): List<MovieEntity> = withContext(dispatcher) {
+    override suspend fun getAll(): List<MovieEntity> = runWithContext {
         dao.getAll()
-    }
+    }.getOrDefault(emptyList())
 
     override suspend fun isEmpty() = runWithContext { count() == 0 }
         .getOrDefault(defaultValue = false)
@@ -25,10 +25,17 @@ class RoomDataSource(
         }
 
     override suspend fun find(id: Int) =
-        runWithContext { findById(id) }.fold(onSuccess = {
-            if (it == null) Result.failure(MovieNoExists())
-            else Result.success(it)
-        }, onFailure = { Result.failure(MovieNoExists()) })
+        runWithContext { findById(id) }
+            .fold(
+                onSuccess = {
+                    if (it == null) {
+                        Result.failure(MovieNoExists())
+                    } else {
+                        Result.success(it)
+                    }
+                },
+                onFailure = { Result.failure(MovieNoExists()) }
+            )
 
     override suspend fun delete(movie: MovieEntity) = runWithContext { delete(movie); true }
 

@@ -14,10 +14,8 @@ internal class MovieDataSource(
     }
 
     override suspend fun findMovie(id: Int) = runCatching {
-        val response = service.getMovie(version = DEFAULT_VERSION, id = id)
-        response
+        service.getMovie(version = DEFAULT_VERSION, id = id)
     }
-
 
     companion object {
         private const val SINGLE_PAGE = 1
