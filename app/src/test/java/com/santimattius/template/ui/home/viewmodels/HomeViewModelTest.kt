@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.santimattius.template.domain.usecases.FetchPopularMovies
 import com.santimattius.template.domain.usecases.GetPopularMovies
 import com.santimattius.template.ui.home.HomeViewModel
-import com.santimattius.template.ui.home.models.HomeState
+import com.santimattius.template.ui.home.HomeState
 import com.santimattius.template.utils.MainCoroutinesTestRule
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

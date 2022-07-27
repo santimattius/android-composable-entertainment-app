@@ -18,19 +18,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.santimattius.template.R
-import com.santimattius.template.ui.components.DialogAction
+import com.santimattius.template.domain.entities.Movie
+import com.santimattius.template.ui.components.AlertDialog
 import com.santimattius.template.ui.home.components.Center
 import com.santimattius.template.ui.home.components.ErrorDialog
 import com.santimattius.template.ui.home.components.MovieView
-import com.santimattius.template.ui.home.models.HomeState
-import com.santimattius.template.ui.home.models.MovieUiModel
 import org.koin.androidx.compose.getViewModel
 
 @ExperimentalLifecycleComposeApi
 @Composable
 fun HomeRoute(
     homeViewModel: HomeViewModel = getViewModel(),
-    onMovieClick: (MovieUiModel) -> Unit,
+    onMovieClick: (Movie) -> Unit,
     navigationUp: () -> Unit,
 ) {
     val state by homeViewModel.state.collectAsStateWithLifecycle()
@@ -46,7 +45,7 @@ fun HomeRoute(
 @Composable
 private fun HomeScreen(
     state: HomeState,
-    onMovieClick: (MovieUiModel) -> Unit,
+    onMovieClick: (Movie) -> Unit,
     onRefresh: () -> Unit,
     navigationUp: () -> Unit,
 ) {
@@ -69,7 +68,7 @@ private fun HomeScreen(
 @Composable
 private fun HomeContent(
     state: HomeState,
-    onMovieClick: (MovieUiModel) -> Unit,
+    onMovieClick: (Movie) -> Unit,
     onRefresh: () -> Unit,
     navigationUp: () -> Unit,
 ) {
@@ -86,10 +85,10 @@ private fun HomeContent(
                     message = stringResource(
                         id = R.string.message_loading_error
                     ),
-                    positiveAction = DialogAction(text = stringResource(R.string.button_text_positive_error)) {
+                    positiveAction = AlertDialog(text = stringResource(R.string.button_text_positive_error)) {
                         onRefresh()
                     },
-                    negativeAction = DialogAction(text = stringResource(R.string.button_text_negative_error)) {
+                    negativeAction = AlertDialog(text = stringResource(R.string.button_text_negative_error)) {
                         navigationUp()
                     }
                 )
@@ -121,8 +120,8 @@ private fun HomeContent(
 
 @Composable
 fun MovieGridView(
-    movies: List<MovieUiModel>,
-    onMovieClick: (MovieUiModel) -> Unit,
+    movies: List<Movie>,
+    onMovieClick: (Movie) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(

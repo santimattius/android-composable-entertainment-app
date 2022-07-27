@@ -7,13 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.santimattius.template.R
-import com.santimattius.template.ui.components.DialogAction
+import com.santimattius.template.ui.components.AlertDialog
 
 @Composable
 fun ErrorDialog(
     message: String,
-    positiveAction: DialogAction,
-    negativeAction: DialogAction,
+    positiveAction: AlertDialog,
+    negativeAction: AlertDialog,
 ) {
     AlertDialog(
         onDismissRequest = { },
@@ -38,10 +38,10 @@ fun ErrorDialogPreview() {
         message = stringResource(
             id = R.string.message_loading_error
         ),
-        positiveAction = DialogAction(text = stringResource(R.string.button_text_positive_error)) {
+        positiveAction = AlertDialog(text = stringResource(R.string.button_text_positive_error)) {
 
         },
-        negativeAction = DialogAction(text = stringResource(R.string.button_text_negative_error)) {
+        negativeAction = AlertDialog(text = stringResource(R.string.button_text_negative_error)) {
 
         }
     )
