@@ -8,11 +8,12 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.santimattius.template.R
 import com.santimattius.template.data.dtoToDomain
 import com.santimattius.template.domain.repositories.MovieRepository
-import com.santimattius.template.ui.home.HomeFragment
+import com.santimattius.template.ui.home.MainActivity
 import com.santimattius.template.ui.home.viewmodels.FakeMovieRepository
 import com.santimattius.template.utils.KoinRule
 import com.santimattius.template.utils.MainCoroutinesTestRule
@@ -54,10 +55,7 @@ class MainActivityAndroidXTest : KoinTest {
     @Test
     fun `verify first movie is spider-man`() {
 
-        val scenario =
-            launchFragmentInContainer<HomeFragment>(themeResId = R.style.Theme_EntertainmentApp)
-
-        scenario.onFragment {
+        ActivityScenario.launch(MainActivity::class.java).use {
             composeTestRule
                 .onNodeWithTag("Spider-Man: No Way Home")
                 .assertIsDisplayed()

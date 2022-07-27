@@ -15,19 +15,22 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.santimattius.template.R
-import com.santimattius.template.ui.home.models.MovieUiModel
+import com.santimattius.template.domain.entities.Movie
 
 private const val IMAGE_ASPECT_RATIO = 0.67f
 
 @Composable
-fun MovieView(movie: MovieUiModel, modifier: Modifier = Modifier) {
+fun MovieView(
+    movie: Movie,
+    modifier: Modifier = Modifier,
+) {
     Card(
         modifier = modifier
             .testTag(movie.title)
             .padding(dimensionResource(R.dimen.item_movie_padding))
     ) {
         SubcomposeAsyncImage(
-            model = movie.imageUrl,
+            model = movie.poster,
             loading = {
                 Box(contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(

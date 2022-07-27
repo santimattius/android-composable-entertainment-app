@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.santimattius.template.domain.entities.Movie
 import com.santimattius.template.domain.usecases.FetchPopularMovies
 import com.santimattius.template.domain.usecases.GetPopularMovies
-import com.santimattius.template.ui.home.models.HomeState
-import com.santimattius.template.ui.home.models.mapping.asUiModels
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,12 +46,11 @@ class HomeViewModel(
     }
 
     private fun notify(popularMovies: List<Movie>) {
-        val movies = popularMovies.asUiModels()
         _state.update {
             it.copy(
                 isRefreshing = false,
                 isLoading = false,
-                data = movies
+                data = popularMovies
             )
         }
     }

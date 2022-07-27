@@ -59,9 +59,7 @@ class HomeFragmentTest : KoinTest {
     @Test
     fun `verify first movie is spider-man`() {
 
-        val scenario = launchFragmentInContainer<HomeFragment>()
-
-        scenario.onFragment {
+        ActivityScenario.launch(MainActivity::class.java).use {
             composeTestRule
                 .onNodeWithTag("Spider-Man: No Way Home").assertIsDisplayed()
 
