@@ -5,6 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.test.core.app.ActivityScenario
 import com.santimattius.template.data.dtoToDomain
 import com.santimattius.template.domain.repositories.MovieRepository
@@ -22,6 +23,7 @@ import org.koin.test.KoinTest
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
+@ExperimentalLifecycleComposeApi
 @ExperimentalCoroutinesApi
 @RunWith(RobolectricTestRunner::class)
 @Config(

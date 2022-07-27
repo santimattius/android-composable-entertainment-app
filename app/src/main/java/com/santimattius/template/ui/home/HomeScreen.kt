@@ -1,9 +1,7 @@
 package com.santimattius.template.ui.home
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -11,7 +9,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -22,16 +19,19 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.santimattius.template.R
 import com.santimattius.template.ui.components.DialogAction
+import com.santimattius.template.ui.home.components.Center
+import com.santimattius.template.ui.home.components.ErrorDialog
 import com.santimattius.template.ui.home.components.MovieView
 import com.santimattius.template.ui.home.models.HomeState
 import com.santimattius.template.ui.home.models.MovieUiModel
+import org.koin.androidx.compose.getViewModel
 
 @ExperimentalLifecycleComposeApi
 @Composable
 fun HomeRoute(
-    homeViewModel: HomeViewModel,
+    homeViewModel: HomeViewModel = getViewModel(),
     onMovieClick: (MovieUiModel) -> Unit,
-    onBack: () -> Unit,
+    navigationUp: () -> Unit,
 ) {
     val state by homeViewModel.state.collectAsStateWithLifecycle()
 
@@ -39,7 +39,7 @@ fun HomeRoute(
         state = state,
         onMovieClick = onMovieClick,
         onRefresh = homeViewModel::refresh,
-        onBack = onBack
+        navigationUp = navigationUp
     )
 }
 
@@ -48,7 +48,30 @@ private fun HomeScreen(
     state: HomeState,
     onMovieClick: (MovieUiModel) -> Unit,
     onRefresh: () -> Unit,
-    onBack: () -> Unit,
+    navigationUp: () -> Unit,
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.app_name)) }
+            )
+        }
+    ) {
+        HomeContent(
+            state = state,
+            onMovieClick = onMovieClick,
+            onRefresh = onRefresh,
+            navigationUp = navigationUp
+        )
+    }
+}
+
+@Composable
+private fun HomeContent(
+    state: HomeState,
+    onMovieClick: (MovieUiModel) -> Unit,
+    onRefresh: () -> Unit,
+    navigationUp: () -> Unit,
 ) {
     val swipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = state.isRefreshing
@@ -67,7 +90,7 @@ private fun HomeScreen(
                         onRefresh()
                     },
                     negativeAction = DialogAction(text = stringResource(R.string.button_text_negative_error)) {
-                        onBack()
+                        navigationUp()
                     }
                 )
             }
@@ -116,37 +139,3 @@ fun MovieGridView(
     }
 }
 
-@Composable
-fun ErrorDialog(
-    message: String,
-    positiveAction: DialogAction,
-    negativeAction: DialogAction,
-) {
-    AlertDialog(
-        onDismissRequest = { },
-        confirmButton = {
-            TextButton(onClick = positiveAction.action) {
-                Text(text = positiveAction.text)
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = negativeAction.action) {
-                Text(text = negativeAction.text)
-            }
-        },
-        text = { Text(text = message) }
-    )
-}
-
-@Composable
-fun Center(
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
-) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize(),
-    ) {
-        content()
-    }
-}

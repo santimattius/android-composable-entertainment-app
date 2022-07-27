@@ -22,7 +22,7 @@ import com.santimattius.template.ui.theme.AndroidComposableEntertainmentAppTheme
 /**
  * open link in to browser
  */
-fun Fragment.navigateToDeeplink(url: String) {
+fun Context.navigateToDeeplink(url: String) {
     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     this.startActivity(browserIntent)

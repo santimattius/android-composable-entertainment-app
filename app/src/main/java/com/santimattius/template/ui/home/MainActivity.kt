@@ -1,18 +1,26 @@
 package com.santimattius.template.ui.home
 
 import android.os.Bundle
-import androidx.annotation.VisibleForTesting
-import androidx.appcompat.app.AppCompatActivity
-import com.santimattius.template.databinding.ActivityMainBinding
+import androidx.activity.ComponentActivity
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import com.santimattius.template.ui.components.content
+import com.santimattius.template.ui.components.navigateToDeeplink
 
-class MainActivity : AppCompatActivity() {
-
-    @VisibleForTesting
-    internal lateinit var viewBinding: ActivityMainBinding
+@ExperimentalLifecycleComposeApi
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewBinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(viewBinding.root)
+        content {
+            HomeRoute(
+                onMovieClick = {
+                    val deepLink = "app://movie/${it.id}"
+                    navigateToDeeplink(deepLink)
+                },
+                navigationUp = {
+                    finish()
+                }
+            )
+        }
     }
 }
