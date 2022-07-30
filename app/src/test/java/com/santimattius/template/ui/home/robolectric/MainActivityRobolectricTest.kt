@@ -2,27 +2,22 @@ package com.santimattius.template.ui.home.robolectric
 
 import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.test.core.app.ActivityScenario
-import com.santimattius.template.data.dtoToDomain
-import com.santimattius.template.domain.repositories.MovieRepository
-import com.santimattius.template.ui.home.MainActivity
-import com.santimattius.template.ui.home.viewmodels.FakeMovieRepository
-import com.santimattius.template.utils.KoinRule
+import com.santimattius.template.ui.MainActivity
 import com.santimattius.template.utils.MainCoroutinesTestRule
-import com.santimattius.template.utils.TheMovieDBMother
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.dsl.module
-import org.koin.test.KoinTest
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
+@ExperimentalAnimationApi
 @ExperimentalLifecycleComposeApi
 @ExperimentalCoroutinesApi
 @RunWith(RobolectricTestRunner::class)
@@ -31,7 +26,7 @@ import org.robolectric.annotation.Config
     sdk = [Build.VERSION_CODES.R],
     instrumentedPackages = ["androidx.loader.content"],
 )
-class MainActivityRobolectricTest : KoinTest {
+class MainActivityRobolectricTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -39,12 +34,12 @@ class MainActivityRobolectricTest : KoinTest {
     @get:Rule
     val coroutinesTestRule = MainCoroutinesTestRule()
 
-    @get:Rule
-    val koinRule = KoinRule.robolectric(module = module {
-        single<MovieRepository> {
-            FakeMovieRepository(answers = { TheMovieDBMother.movies().dtoToDomain() })
-        }
-    })
+//    @get:Rule
+//    val koinRule = KoinRule.robolectric(module = module {
+//        single<MovieRepository> {
+//            FakeMovieRepository(answers = { TheMovieDBMother.movies().dtoToDomain() })
+//        }
+//    })
 
     @get:Rule
     val composeTestRule = createComposeRule()

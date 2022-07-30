@@ -1,4 +1,4 @@
-package com.santimattius.template.ui.home.components
+package com.santimattius.template.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

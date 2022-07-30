@@ -4,16 +4,20 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.santimattius.template.domain.usecases.FindMovie
+import com.santimattius.template.ui.navigation.NavArg
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MovieDetailViewModel(
-    handle: SavedStateHandle,
+@HiltViewModel
+class MovieDetailViewModel @Inject constructor(
     private val findMovie: FindMovie,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MovieDetailState())
@@ -22,7 +26,7 @@ class MovieDetailViewModel(
     private var job: Job? = null
 
     init {
-        val id = handle.get<Int>("id")
+        val id = savedStateHandle.get<Int>(NavArg.ItemId.key)
         if (id == null) {
             _state.update { it.copy(hasError = true) }
         } else {
@@ -36,12 +40,12 @@ class MovieDetailViewModel(
         job = viewModelScope.launch {
             val movie = findMovie(id)
             _state.update {
-                if (movie == null){
+                if (movie == null) {
                     it.copy(
                         isLoading = false,
                         hasError = true
                     )
-                }else{
+                } else {
                     it.copy(
                         isLoading = false,
                         hasError = false,

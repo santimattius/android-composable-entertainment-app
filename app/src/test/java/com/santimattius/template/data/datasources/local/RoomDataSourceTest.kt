@@ -8,7 +8,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.santimattius.template.data.client.database.AppDataBase
 import com.santimattius.template.data.datasources.implementation.MovieEntityMother
 import com.santimattius.template.data.datasources.implementation.RoomDataSource
-import com.santimattius.template.utils.KoinRule
 import com.santimattius.template.utils.MainCoroutinesTestRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -20,7 +19,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.test.KoinTest
 import org.robolectric.annotation.Config
 import java.io.IOException
 import kotlin.random.Random
@@ -28,13 +26,10 @@ import kotlin.random.Random
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @Config(manifest = Config.NONE, sdk = [Build.VERSION_CODES.R])
-class RoomDataSourceTest : KoinTest {
+class RoomDataSourceTest {
 
     @get:Rule
     val coroutinesTestRule = MainCoroutinesTestRule()
-
-    @get:Rule
-    val koinRule = KoinRule.androidx()
 
     private lateinit var db: AppDataBase
     private lateinit var dataSource: RoomDataSource

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.santimattius.template.domain.entities.Movie
 import com.santimattius.template.domain.usecases.FetchPopularMovies
 import com.santimattius.template.domain.usecases.GetPopularMovies
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,8 +13,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val getPopularMovies: GetPopularMovies,
     private val fetchPopularMovies: FetchPopularMovies,
 ) : ViewModel() {

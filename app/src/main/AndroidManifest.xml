@@ -14,27 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EntertainmentApp">
         <activity
-            android:name=".ui.home.MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.detail.MovieDetailActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="movie"
-                    android:scheme="app" />
             </intent-filter>
         </activity>
     </application>

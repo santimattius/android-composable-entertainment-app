@@ -8,7 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import com.santimattius.template.ui.theme.AndroidComposableEntertainmentAppTheme
+import com.santimattius.template.ui.theme.EntertainmentAppTheme
 
 /**
  * open link in to browser
@@ -26,7 +26,7 @@ fun Context.navigateToDeeplink(url: String) {
  */
 fun ComponentActivity.content(content: @Composable () -> Unit) {
     setContent {
-        AndroidComposableEntertainmentAppTheme {
+        EntertainmentAppTheme {
             Surface(color = MaterialTheme.colors.background) {
                 content()
             }
