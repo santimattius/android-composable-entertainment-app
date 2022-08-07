@@ -8,7 +8,6 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -16,23 +15,20 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import com.santimattius.template.R
-import com.santimattius.template.domain.entities.Movie
+import com.santimattius.template.domain.entities.Entertainment
 import com.santimattius.template.ui.components.Center
+import com.santimattius.template.ui.components.UiState
 
-@ExperimentalLifecycleComposeApi
+
 @Composable
-fun MovieDetailRoute(
-    viewModel: MovieDetailViewModel = hiltViewModel(),
+fun <T : Entertainment> DetailScaffold(
+    state: UiState<T>,
 ) {
     val scrollState = rememberScrollState()
-    val state by viewModel.state.collectAsStateWithLifecycle()
 
-    MovieDetailStates(state) { movie ->
+    DetailStates(state) { movie ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.medium)),
@@ -83,9 +79,9 @@ fun MovieDetailRoute(
 }
 
 @Composable
-private fun MovieDetailStates(
-    state: MovieDetailState,
-    content: @Composable (Movie) -> Unit,
+private fun <T : Entertainment> DetailStates(
+    state: UiState<T>,
+    content: @Composable (T) -> Unit,
 ) {
     when {
         state.isLoading -> {
@@ -93,13 +89,13 @@ private fun MovieDetailStates(
                 CircularProgressIndicator()
             }
         }
-        state.hasError -> {
+        state.hasError || state.data == null -> {
             Center {
                 Text(stringResource(id = R.string.message_text_empty_result))
             }
         }
         else -> {
-            content(state.data)
+            content(state.data!!)
         }
     }
 }

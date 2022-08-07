@@ -1,10 +1,10 @@
-package com.santimattius.template.ui.home
+package com.santimattius.template.ui.home.tvshows
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.santimattius.template.domain.entities.Movie
-import com.santimattius.template.domain.usecases.FetchPopularMovies
-import com.santimattius.template.domain.usecases.GetPopularMovies
+import com.santimattius.template.domain.entities.TvShow
+import com.santimattius.template.domain.usecases.tvshows.FetchPopularTvShows
+import com.santimattius.template.domain.usecases.tvshows.GetPopularTvShows
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -16,14 +16,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val getPopularMovies: GetPopularMovies,
-    private val fetchPopularMovies: FetchPopularMovies,
+class PopularTvShowsViewModel @Inject constructor(
+    private val getPopularTvShows: GetPopularTvShows,
+    private val fetchPopularTvShows: FetchPopularTvShows,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(HomeState.init())
-    val state: StateFlow<HomeState>
-        get() = _state.asStateFlow()
+    private val _state = MutableStateFlow(PopularTvShowsScreenState.init())
+    val state: StateFlow<PopularTvShowsScreenState> get() = _state.asStateFlow()
 
     private var job: Job? = null
 
@@ -43,12 +42,12 @@ class HomeViewModel @Inject constructor(
             )
         }
         viewModelScope.launch(exceptionHandler) {
-            val movies = getPopularMovies()
-            notify(movies)
+            val popularsTvShows = getPopularTvShows()
+            notify(popularsTvShows)
         }
     }
 
-    private fun notify(popularMovies: List<Movie>) {
+    private fun notify(popularMovies: List<TvShow>) {
         _state.update {
             it.copy(
                 isRefreshing = false,
@@ -66,8 +65,8 @@ class HomeViewModel @Inject constructor(
     private fun fetch() {
         job?.cancel()
         job = viewModelScope.launch(exceptionHandler) {
-            fetchPopularMovies().onSuccess { popularMovies ->
-                notify(popularMovies)
+            fetchPopularTvShows().onSuccess { popularTvShows ->
+                notify(popularTvShows)
             }.onFailure {
                 _state.update { it.copy(isLoading = false, isRefreshing = false, hasError = true) }
             }

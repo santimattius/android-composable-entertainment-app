@@ -1,4 +1,4 @@
-package com.santimattius.template.ui.home.components
+package com.santimattius.template.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,22 +15,22 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.santimattius.template.R
-import com.santimattius.template.domain.entities.Movie
+import com.santimattius.template.domain.entities.Entertainment
 
 private const val IMAGE_ASPECT_RATIO = 0.67f
 
 @Composable
-fun MovieView(
-    movie: Movie,
+fun CardGridItem(
+    item: Entertainment,
     modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier
-            .testTag(movie.title)
+            .testTag(item.title)
             .padding(dimensionResource(R.dimen.item_movie_padding))
     ) {
         SubcomposeAsyncImage(
-            model = movie.poster,
+            model = item.poster,
             loading = {
                 Box(contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(
@@ -39,7 +39,7 @@ fun MovieView(
                     )
                 }
             },
-            contentDescription = movie.title,
+            contentDescription = item.title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()

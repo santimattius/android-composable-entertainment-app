@@ -1,16 +1,16 @@
-package com.santimattius.template.data.datasources.implementation
+package com.santimattius.template.data.datasources.impl
 
 import com.santimattius.template.data.client.database.MovieDao
-import com.santimattius.template.data.datasources.LocalDataSource
+import com.santimattius.template.data.datasources.MovieLocalDataSource
 import com.santimattius.template.data.entities.MovieEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class RoomDataSource(
+class RoomMovieDataSource(
     private val dao: MovieDao,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : LocalDataSource {
+    override val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+) : MovieLocalDataSource {
 
     override suspend fun getAll(): List<MovieEntity> = runWithContext {
         dao.getAll()
@@ -19,9 +19,9 @@ class RoomDataSource(
     override suspend fun isEmpty() = runWithContext { count() == 0 }
         .getOrDefault(defaultValue = false)
 
-    override suspend fun save(movies: List<MovieEntity>): Result<Boolean> =
+    override suspend fun save(items: List<MovieEntity>): Result<Boolean> =
         runWithContext {
-            deleteAndInsert(*movies.toTypedArray()); true
+            deleteAndInsert(*items.toTypedArray()); true
         }
 
     override suspend fun find(id: Int) =
@@ -37,9 +37,9 @@ class RoomDataSource(
                 onFailure = { Result.failure(MovieNoExists()) }
             )
 
-    override suspend fun delete(movie: MovieEntity) = runWithContext { delete(movie); true }
+    override suspend fun delete(item: MovieEntity) = runWithContext { delete(item); true }
 
-    override suspend fun update(movie: MovieEntity) = runWithContext { update(movie); true }
+    override suspend fun update(item: MovieEntity) = runWithContext { update(item); true }
 
     private suspend fun <R> runWithContext(block: suspend MovieDao.() -> R) =
         withContext(dispatcher) {

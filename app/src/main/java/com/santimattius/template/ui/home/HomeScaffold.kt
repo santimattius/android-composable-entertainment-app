@@ -10,47 +10,24 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.santimattius.template.R
-import com.santimattius.template.domain.entities.Movie
-import com.santimattius.template.ui.components.AlertDialog
-import com.santimattius.template.ui.components.Center
-import com.santimattius.template.ui.components.ErrorDialog
-import com.santimattius.template.ui.home.components.MovieView
+import com.santimattius.template.domain.entities.Entertainment
+import com.santimattius.template.ui.components.*
 
-@ExperimentalLifecycleComposeApi
-@Composable
-fun HomeRoute(
-    homeViewModel: HomeViewModel = hiltViewModel(),
-    onMovieClick: (Movie) -> Unit,
-    navigationUp: () -> Unit,
-) {
-    val state by homeViewModel.state.collectAsStateWithLifecycle()
-
-    HomeScreen(
-        state = state,
-        onMovieClick = onMovieClick,
-        onRefresh = homeViewModel::refresh,
-        navigationUp = navigationUp
-    )
-}
 
 @Composable
-private fun HomeScreen(
-    state: HomeState,
-    onMovieClick: (Movie) -> Unit,
+internal fun <T> HomeScaffold(
+    state: UiState<List<T>>,
+    onMovieClick: (T) -> Unit,
     onRefresh: () -> Unit,
     navigationUp: () -> Unit,
-) {
+) where T : Entertainment {
     val swipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = state.isRefreshing
     )
@@ -81,14 +58,14 @@ private fun HomeScreen(
                 }
             }
             else -> {
-                if (state.data.isEmpty()) {
+                if (state.data.isNullOrEmpty()) {
                     Center {
                         Text(text = stringResource(id = R.string.message_text_empty_result))
                     }
                 } else {
-                    MovieGridView(
-                        movies = state.data,
-                        onMovieClick = onMovieClick
+                    ContentGridView(
+                        entertainmentItems = state.data!!,
+                        onItemClick = onMovieClick
                     )
                 }
 
@@ -98,9 +75,9 @@ private fun HomeScreen(
 }
 
 @Composable
-fun MovieGridView(
-    movies: List<Movie>,
-    onMovieClick: (Movie) -> Unit,
+fun <T : Entertainment> ContentGridView(
+    entertainmentItems: List<T>,
+    onItemClick: (T) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
@@ -108,12 +85,8 @@ fun MovieGridView(
         contentPadding = PaddingValues(dimensionResource(R.dimen.x_small)),
         modifier = modifier
     ) {
-        items(movies, key = { it.id }) { movie ->
-            MovieView(
-                movie = movie,
-                modifier = Modifier.clickable { onMovieClick(movie) }
-            )
+        items(entertainmentItems, key = { it.id }) { item ->
+            CardGridItem(item = item, Modifier.clickable { onItemClick(item) })
         }
     }
 }
-

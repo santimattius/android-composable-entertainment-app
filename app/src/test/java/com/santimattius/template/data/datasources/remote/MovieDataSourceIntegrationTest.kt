@@ -3,7 +3,7 @@ package com.santimattius.template.data.datasources.remote
 
 import com.santimattius.template.data.client.network.TheMovieDBService
 import com.santimattius.template.data.client.network.service
-import com.santimattius.template.data.datasources.implementation.MovieDataSource
+import com.santimattius.template.data.datasources.impl.TMDBMovieDataSource
 import com.santimattius.template.utils.JsonLoader
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -20,7 +20,7 @@ import java.net.HttpURLConnection
 class MovieDataSourceIntegrationTest {
 
     private val jsonLoader = JsonLoader()
-    private lateinit var movieDataSource: MovieDataSource
+    private lateinit var movieDataSource: TMDBMovieDataSource
     private lateinit var mockWebServer: MockWebServer
 
 
@@ -30,7 +30,7 @@ class MovieDataSourceIntegrationTest {
         mockWebServer.start()
         val baseUrl = mockWebServer.url("/").toUri().toString()
         val client = service<TheMovieDBService>(baseUrl = baseUrl)
-        movieDataSource = MovieDataSource(client)
+        movieDataSource = TMDBMovieDataSource(client)
     }
 
     @After
@@ -47,7 +47,7 @@ class MovieDataSourceIntegrationTest {
         mockWebServer.enqueue(response)
 
         runBlocking {
-            val result = movieDataSource.getPopularMovies()
+            val result = movieDataSource.getAll()
             assertThat(result.isSuccess, equalTo(true))
             assertThat(result.getOrNull()?.isNotEmpty(), equalTo(true))
         }
@@ -62,7 +62,7 @@ class MovieDataSourceIntegrationTest {
         mockWebServer.enqueue(response)
 
         runBlocking {
-            val result = movieDataSource.getPopularMovies()
+            val result = movieDataSource.getAll()
             assertThat(result.isFailure, equalTo(true))
         }
     }

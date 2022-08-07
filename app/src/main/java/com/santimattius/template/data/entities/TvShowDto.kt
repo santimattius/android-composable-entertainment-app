@@ -2,9 +2,7 @@ package com.santimattius.template.data.entities
 
 import com.squareup.moshi.Json
 
-data class TvDto(
-    @Json(name = "id")
-    val id: Int = 0,
+data class TvShowDto(
     @Json(name = "first_air_date")
     val firstAirDate: String = "",
     @Json(name = "overview")
@@ -14,11 +12,11 @@ data class TvDto(
     @Json(name = "genre_ids")
     val genreIds: List<Int> = emptyList(),
     @Json(name = "poster_path")
-    val posterPath: String?,
+    val posterPath: String = "",
     @Json(name = "origin_country")
-    val originCountry: List<String> = emptyList(),
+    val originCountry: List<String>?,
     @Json(name = "backdrop_path")
-    val backdropPath: String?,
+    val backdropPath: String = "",
     @Json(name = "original_name")
     val originalName: String = "",
     @Json(name = "popularity")
@@ -27,6 +25,11 @@ data class TvDto(
     val voteAverage: Double = 0.0,
     @Json(name = "name")
     val name: String = "",
+    @Json(name = "id")
+    val id: Int = 0,
     @Json(name = "vote_count")
     val voteCount: Int = 0,
-)
+) {
+    val poster: String
+        get() = "https://image.tmdb.org/t/p/w500${posterPath}"
+}

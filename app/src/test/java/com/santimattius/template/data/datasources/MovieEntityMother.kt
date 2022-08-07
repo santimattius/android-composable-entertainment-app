@@ -1,4 +1,4 @@
-package com.santimattius.template.data.datasources.implementation
+package com.santimattius.template.data.datasources
 
 import com.santimattius.template.data.entities.MovieEntity
 

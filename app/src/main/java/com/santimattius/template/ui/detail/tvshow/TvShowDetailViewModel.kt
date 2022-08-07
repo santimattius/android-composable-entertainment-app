@@ -1,9 +1,9 @@
-package com.santimattius.template.ui.detail
+package com.santimattius.template.ui.detail.tvshow
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.santimattius.template.domain.usecases.FindMovie
+import com.santimattius.template.domain.usecases.tvshows.FindTvShow
 import com.santimattius.template.ui.navigation.NavArg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -15,13 +15,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieDetailViewModel @Inject constructor(
-    private val findMovie: FindMovie,
+class TvShowDetailViewModel @Inject constructor(
+    private val findTvShow: FindTvShow,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(MovieDetailState())
-    val state: StateFlow<MovieDetailState> get() = _state.asStateFlow()
+    private val _state = MutableStateFlow(TvShowDetailScreenState())
+    val state: StateFlow<TvShowDetailScreenState> get() = _state.asStateFlow()
 
     private var job: Job? = null
 
@@ -38,9 +38,9 @@ class MovieDetailViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         job?.cancel()
         job = viewModelScope.launch {
-            val movie = findMovie(id)
+            val tvShow = findTvShow(id)
             _state.update {
-                if (movie == null) {
+                if (tvShow == null) {
                     it.copy(
                         isLoading = false,
                         hasError = true
@@ -49,7 +49,7 @@ class MovieDetailViewModel @Inject constructor(
                     it.copy(
                         isLoading = false,
                         hasError = false,
-                        data = movie
+                        data = tvShow
                     )
                 }
 

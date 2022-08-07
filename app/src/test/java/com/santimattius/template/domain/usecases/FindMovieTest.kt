@@ -1,6 +1,6 @@
 package com.santimattius.template.domain.usecases
 
-import com.santimattius.template.data.datasources.implementation.MovieEntityMother
+import com.santimattius.template.data.datasources.MovieEntityMother
 import com.santimattius.template.data.entityToDomain
 import com.santimattius.template.ui.home.viewmodels.FakeMovieRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -3,8 +3,8 @@ package com.santimattius.template.ui.home.viewmodels
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.santimattius.template.domain.usecases.FetchPopularMovies
 import com.santimattius.template.domain.usecases.GetPopularMovies
-import com.santimattius.template.ui.home.HomeViewModel
-import com.santimattius.template.ui.home.HomeState
+import com.santimattius.template.ui.home.movies.PopularMoviesViewModel
+import com.santimattius.template.ui.home.movies.PopularMoviesScreenState
 import com.santimattius.template.utils.MainCoroutinesTestRule
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,11 +28,11 @@ class HomeViewModelTest {
 
         val userCase = GetPopularMovies(repository = FakeMovieRepository(answers = { emptyList() }))
 
-        val viewModel = HomeViewModel(userCase, mockk())
+        val viewModel = PopularMoviesViewModel(userCase, mockk())
 
         runTest {
             val state = viewModel.state.value
-            assertThat(state, IsEqual(HomeState(data = emptyList())))
+            assertThat(state, IsEqual(PopularMoviesScreenState(data = emptyList())))
         }
 
     }
@@ -43,10 +43,10 @@ class HomeViewModelTest {
         val userCase =
             GetPopularMovies(repository = FakeMovieRepository(answers = { throw TestException() }))
 
-        val viewModel = HomeViewModel(userCase, mockk())
+        val viewModel = PopularMoviesViewModel(userCase, mockk())
         runTest {
             val state = viewModel.state.value
-            assertThat(state, IsEqual(HomeState(hasError = true)))
+            assertThat(state, IsEqual(PopularMoviesScreenState(hasError = true)))
         }
     }
 
@@ -57,13 +57,13 @@ class HomeViewModelTest {
             Result.failure(TestException())
         }))
 
-        val viewModel = HomeViewModel(mockk(), userCase)
+        val viewModel = PopularMoviesViewModel(mockk(), userCase)
 
         viewModel.refresh()
 
         runTest {
             val state = viewModel.state.value
-            assertThat(state, IsEqual(HomeState(hasError = true)))
+            assertThat(state, IsEqual(PopularMoviesScreenState(hasError = true)))
         }
     }
 

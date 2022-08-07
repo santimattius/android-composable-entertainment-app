@@ -1,7 +1,7 @@
 package com.santimattius.template.data.datasources.remote
 
 import com.santimattius.template.data.client.network.TheMovieDBService
-import com.santimattius.template.data.datasources.implementation.MovieDataSource
+import com.santimattius.template.data.datasources.impl.TMDBMovieDataSource
 import com.santimattius.template.data.entities.Response
 import com.santimattius.template.utils.TheMovieDBMother
 import io.mockk.coEvery
@@ -17,7 +17,7 @@ import org.junit.Test
 class MovieDataSourceTest {
 
     private val client: TheMovieDBService = mockk()
-    private val movieDataSource = MovieDataSource(client)
+    private val movieDataSource = TMDBMovieDataSource(client)
 
     @Test
     fun `get populars movie on client result is success`() {
@@ -28,7 +28,7 @@ class MovieDataSourceTest {
         } returns Response(results = pictures)
 
         runTest {
-            val result = movieDataSource.getPopularMovies()
+            val result = movieDataSource.getAll()
             assertThat(result.isSuccess, IsEqual(true))
         }
 
@@ -39,7 +39,7 @@ class MovieDataSourceTest {
     fun `get popular movie on client result is fail`() {
         coEvery { client.getMoviePopular(any(), any()) } throws Throwable()
         runTest {
-            val result = movieDataSource.getPopularMovies()
+            val result = movieDataSource.getAll()
             assertThat(result.isFailure, IsEqual(true))
         }
         coVerify { client.getMoviePopular(any(), any()) }

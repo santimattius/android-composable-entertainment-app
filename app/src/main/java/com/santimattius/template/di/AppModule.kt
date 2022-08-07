@@ -5,10 +5,10 @@ import com.santimattius.template.BuildConfig
 import com.santimattius.template.data.client.database.AppDataBase
 import com.santimattius.template.data.client.network.TheMovieDBService
 import com.santimattius.template.data.client.network.service
-import com.santimattius.template.data.datasources.LocalDataSource
-import com.santimattius.template.data.datasources.RemoteDataSource
-import com.santimattius.template.data.datasources.implementation.MovieDataSource
-import com.santimattius.template.data.datasources.implementation.RoomDataSource
+import com.santimattius.template.data.datasources.MovieLocalDataSource
+import com.santimattius.template.data.datasources.MovieRemoteDataSource
+import com.santimattius.template.data.datasources.impl.TMDBMovieDataSource
+import com.santimattius.template.data.datasources.impl.RoomMovieDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,11 +34,11 @@ class AppModule {
     fun provideService(@Named("apiKey") apiKey: String): TheMovieDBService = service(key = apiKey)
 
     @Provides
-    fun provideLocalDataSource(db: AppDataBase): LocalDataSource =
-        RoomDataSource(dao = db.dao(), dispatcher = Dispatchers.IO)
+    fun provideLocalDataSource(db: AppDataBase): MovieLocalDataSource =
+        RoomMovieDataSource(dao = db.movieDao(), dispatcher = Dispatchers.IO)
 
 
     @Provides
-    fun provideRemoteDataSource(client: TheMovieDBService): RemoteDataSource =
-        MovieDataSource(service = client)
+    fun provideRemoteDataSource(client: TheMovieDBService): MovieRemoteDataSource =
+        TMDBMovieDataSource(service = client)
 }
