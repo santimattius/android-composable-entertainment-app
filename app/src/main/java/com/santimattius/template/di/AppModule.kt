@@ -7,8 +7,12 @@ import com.santimattius.template.data.client.network.TheMovieDBService
 import com.santimattius.template.data.client.network.service
 import com.santimattius.template.data.datasources.MovieLocalDataSource
 import com.santimattius.template.data.datasources.MovieRemoteDataSource
-import com.santimattius.template.data.datasources.impl.TMDBMovieDataSource
+import com.santimattius.template.data.datasources.TvShowLocalDataSource
+import com.santimattius.template.data.datasources.TvShowRemoteDataSource
 import com.santimattius.template.data.datasources.impl.RoomMovieDataSource
+import com.santimattius.template.data.datasources.impl.RoomTvShowLocalDataSource
+import com.santimattius.template.data.datasources.impl.TMDBMovieDataSource
+import com.santimattius.template.data.datasources.impl.TMDBTvShowRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,11 +38,20 @@ class AppModule {
     fun provideService(@Named("apiKey") apiKey: String): TheMovieDBService = service(key = apiKey)
 
     @Provides
-    fun provideLocalDataSource(db: AppDataBase): MovieLocalDataSource =
+    fun provideMovieLocalDataSource(db: AppDataBase): MovieLocalDataSource =
         RoomMovieDataSource(dao = db.movieDao(), dispatcher = Dispatchers.IO)
 
 
     @Provides
-    fun provideRemoteDataSource(client: TheMovieDBService): MovieRemoteDataSource =
+    fun provideMovieRemoteDataSource(client: TheMovieDBService): MovieRemoteDataSource =
         TMDBMovieDataSource(service = client)
+
+    @Provides
+    fun provideTvShowLocalDataSource(db: AppDataBase): TvShowLocalDataSource =
+        RoomTvShowLocalDataSource(dao = db.tvShowDao(), dispatcher = Dispatchers.IO)
+
+
+    @Provides
+    fun provideTvShowRemoteDataSource(client: TheMovieDBService): TvShowRemoteDataSource =
+        TMDBTvShowRemoteDataSource(service = client)
 }

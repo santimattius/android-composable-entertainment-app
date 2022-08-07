@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class TvShowRoomLocalDataSource(
+class RoomTvShowLocalDataSource(
     private val dao: TvShowDao,
     override val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : TvShowLocalDataSource {

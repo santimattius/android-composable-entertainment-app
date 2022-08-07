@@ -1,9 +1,13 @@
 package com.santimattius.template.di
 
 import com.santimattius.template.domain.repositories.MovieRepository
+import com.santimattius.template.domain.repositories.TvShowsRepository
 import com.santimattius.template.domain.usecases.FetchPopularMovies
 import com.santimattius.template.domain.usecases.FindMovie
 import com.santimattius.template.domain.usecases.GetPopularMovies
+import com.santimattius.template.domain.usecases.tvshows.FetchPopularTvShows
+import com.santimattius.template.domain.usecases.tvshows.FindTvShow
+import com.santimattius.template.domain.usecases.tvshows.GetPopularTvShows
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,4 +31,19 @@ class UiModule {
     @Provides
     @ViewModelScoped
     fun provideFindMovie(repository: MovieRepository) = FindMovie(repository = repository)
+
+    @Provides
+    @ViewModelScoped
+    fun provideFetchPopularTvShows(repository: TvShowsRepository) =
+        FetchPopularTvShows(repository = repository)
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetPopularTvShows(repository: TvShowsRepository) =
+        GetPopularTvShows(repository = repository)
+
+    @Provides
+    @ViewModelScoped
+    fun provideFindTvShow(repository: TvShowsRepository) = FindTvShow(repository = repository)
+
 }
