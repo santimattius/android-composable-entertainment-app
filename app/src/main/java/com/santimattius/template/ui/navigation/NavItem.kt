@@ -2,8 +2,8 @@ package com.santimattius.template.ui.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.LiveTv
+import androidx.compose.material.icons.filled.Movie
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -14,8 +14,8 @@ enum class NavItem(
     val icon: ImageVector,
     @StringRes val title: Int,
 ) {
-    HOME(NavCommand.ContentType(Feature.MOVIES), Icons.Default.Home, R.string.movie),
-    TV(NavCommand.ContentType(Feature.TV_SHOWS), Icons.Default.Search, R.string.tv),
+    HOME(NavCommand.ContentType(Feature.MOVIES), Icons.Filled.Movie, R.string.movie),
+    TV(NavCommand.ContentType(Feature.TV_SHOWS), Icons.Filled.LiveTv, R.string.tv),
 }
 
 sealed class NavCommand(

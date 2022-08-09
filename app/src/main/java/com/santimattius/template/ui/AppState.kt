@@ -30,12 +30,19 @@ class AppState(
     private val coroutineScope: CoroutineScope,
 ) {
 
+    companion object {
+        val BOTTOM_NAV_ITEMS = listOf(NavItem.HOME, NavItem.TV)
+    }
+
     val currentRoute: String
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination?.route
             ?: ""
 
     val showUpNavigation: Boolean
         @Composable get() = !NavItem.values().map { it.navCommand.route }.contains(currentRoute)
+
+    val showBottomNavigation: Boolean
+        @Composable get() = BOTTOM_NAV_ITEMS.any { currentRoute.contains(it.navCommand.feature.route) }
 
     fun onUpClick() {
         navController.popBackStack()

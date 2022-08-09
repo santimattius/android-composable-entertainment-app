@@ -28,6 +28,12 @@ interface TheMovieDBService {
         @Query("page") page: Int,
     ): Response<TvShowDto>
 
+    @GET("/{version}/tv/{id}")
+    suspend fun getTvShow(
+        @Path("version") version: Int = DEFAULT_VERSION,
+        @Path("id") id: Int,
+    ): TvShowDto
+
     companion object {
         const val DEFAULT_VERSION = 3
     }

@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.santimattius.template.data.client.database.AppDataBase
-import com.santimattius.template.data.datasources.MovieEntityMother
-import com.santimattius.template.data.datasources.impl.RoomMovieDataSource
+import com.santimattius.template.data.datasources.TvShowEntityMother
+import com.santimattius.template.data.datasources.impl.RoomTvShowLocalDataSource
 import com.santimattius.template.utils.MainCoroutinesTestRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -26,13 +26,13 @@ import kotlin.random.Random
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @Config(manifest = Config.NONE, sdk = [Build.VERSION_CODES.R])
-class RoomDataSourceTest {
+class RoomTvShowDataSourceTest {
 
     @get:Rule
     val coroutinesTestRule = MainCoroutinesTestRule()
 
     private lateinit var db: AppDataBase
-    private lateinit var dataSource: RoomMovieDataSource
+    private lateinit var dataSource: RoomTvShowLocalDataSource
 
     @Before
     fun createDb() {
@@ -40,7 +40,7 @@ class RoomDataSourceTest {
         db = Room.inMemoryDatabaseBuilder(context, AppDataBase::class.java)
             .allowMainThreadQueries()
             .build()
-        dataSource = RoomMovieDataSource(db.movieDao(), coroutinesTestRule.testDispatcher)
+        dataSource = RoomTvShowLocalDataSource(db.tvShowDao(), coroutinesTestRule.testDispatcher)
     }
 
     @After
@@ -51,13 +51,13 @@ class RoomDataSourceTest {
     }
 
     @Test
-    fun `validate that the movie was saved correctly`() =
+    fun `validate that the tv show was saved correctly`() =
         runTest(coroutinesTestRule.testDispatcher) {
-            val movies = MovieEntityMother.movies()
-            val randomMovie = movies.random()
+            val tvShows = TvShowEntityMother.tvShows()
+            val randomTvShow = tvShows.random()
 
-            val result = dataSource.save(movies)
-            val findResult = dataSource.find(randomMovie.id)
+            val result = dataSource.save(tvShows)
+            val findResult = dataSource.find(randomTvShow.id)
 
             assertThat(result.isSuccess, IsEqual(true))
             assertThat(findResult.isSuccess, IsEqual(true))
@@ -65,30 +65,30 @@ class RoomDataSourceTest {
 
     @Test
     fun `validate that there is stored data`() = runTest(coroutinesTestRule.testDispatcher) {
-        val movies = MovieEntityMother.movies()
-        dataSource.save(movies)
+        val tvShows = TvShowEntityMother.tvShows()
+        dataSource.save(tvShows)
         val result = dataSource.isEmpty()
         assertThat(result, IsEqual(false))
     }
 
     @Test
-    fun `validate that there  no stored data`() = runTest(coroutinesTestRule.testDispatcher) {
+    fun `validate that there no stored data`() = runTest(coroutinesTestRule.testDispatcher) {
         val result = dataSource.isEmpty()
         assertThat(result, IsEqual(true))
     }
 
     @Test
-    fun `validate search by id when movie is stored`() =
+    fun `validate search by id when tv show is stored`() =
         runTest(coroutinesTestRule.testDispatcher) {
-            val movies = MovieEntityMother.movies()
-            val randomMovie = movies.random()
-            dataSource.save(movies)
-            val result = dataSource.find(randomMovie.id)
+            val tvShows = TvShowEntityMother.tvShows()
+            val randomTvShow = tvShows.random()
+            dataSource.save(tvShows)
+            val result = dataSource.find(randomTvShow.id)
             assertThat(result.isSuccess, IsEqual(true))
         }
 
     @Test
-    fun `validate search by id when movie is no stored`() =
+    fun `validate search by id when tv show is no stored`() =
         runTest(coroutinesTestRule.testDispatcher) {
             val result = dataSource.find(Random.nextInt())
             assertThat(result.isFailure, IsEqual(true))
@@ -96,25 +96,26 @@ class RoomDataSourceTest {
 
     @Test
     fun `validate delete when movie is stored`() = runTest(coroutinesTestRule.testDispatcher) {
-        val movies = MovieEntityMother.movies()
-        val randomMovie = movies.random()
+        val tvShows = TvShowEntityMother.tvShows()
+        val randomTvShow = tvShows.random()
 
-        dataSource.save(movies)
-        dataSource.delete(randomMovie)
+        dataSource.save(tvShows)
+        dataSource.delete(randomTvShow)
 
-        val result = dataSource.find(randomMovie.id)
+        val result = dataSource.find(randomTvShow.id)
         assertThat(result.isSuccess, IsEqual(false))
     }
 
     @Test
     fun `validate update when movie is stored`() = runTest(coroutinesTestRule.testDispatcher) {
-        val movie = MovieEntityMother.movie()
-        dataSource.save(listOf(movie))
-        val movieUpdated = movie.copy(title = "Title Updated")
+        val tvShows = TvShowEntityMother.tvShows()
+        val randomTvShow = tvShows.random()
+        dataSource.save(tvShows)
+        val movieUpdated = randomTvShow.copy(title = "Title Updated")
 
         dataSource.update(movieUpdated)
 
         val result = dataSource.find(movieUpdated.id)
-        assertThat(result.getOrNull(), IsNot(IsEqual(movie)))
+        assertThat(result.getOrNull(), IsNot(IsEqual(randomTvShow)))
     }
 }

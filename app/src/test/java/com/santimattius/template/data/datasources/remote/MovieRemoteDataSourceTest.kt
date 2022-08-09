@@ -14,7 +14,7 @@ import org.hamcrest.core.IsEqual
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class MovieDataSourceTest {
+class MovieRemoteDataSourceTest {
 
     private val client: TheMovieDBService = mockk()
     private val movieDataSource = TMDBMovieDataSource(client)
@@ -43,5 +43,39 @@ class MovieDataSourceTest {
             assertThat(result.isFailure, IsEqual(true))
         }
         coVerify { client.getMoviePopular(any(), any()) }
+    }
+
+    @Test
+    fun `find movie by id on client result is success`() {
+
+        val picture = TheMovieDBMother.list().random()
+
+        coEvery {
+            client.getMovie(id = picture.id)
+        } returns picture
+
+        runTest {
+            val result = movieDataSource.find(picture.id)
+            assertThat(result.isSuccess, IsEqual(true))
+            assertThat(result.getOrNull(), IsEqual(picture))
+        }
+
+        coVerify { client.getMovie(id = picture.id) }
+    }
+
+    @Test
+    fun `find movie by id on client result is fail`() {
+        val picture = TheMovieDBMother.list().random()
+
+        coEvery {
+            client.getMovie(id = picture.id)
+        } throws Throwable()
+
+        runTest {
+            val result = movieDataSource.find(picture.id)
+            assertThat(result.isSuccess, IsEqual(false))
+        }
+
+        coVerify { client.getMovie(id = picture.id) }
     }
 }

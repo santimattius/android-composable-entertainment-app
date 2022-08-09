@@ -17,6 +17,7 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import com.santimattius.template.R
 import com.santimattius.template.ui.components.AppBar
 import com.santimattius.template.ui.components.AppBarIcon
+import com.santimattius.template.ui.components.AppBottomNavigation
 import com.santimattius.template.ui.navigation.Navigation
 import com.santimattius.template.ui.theme.EntertainmentAppTheme
 
@@ -42,6 +43,14 @@ fun EntertainmentApp(
                     title = { Text(stringResource(id = R.string.title_app)) },
                     navigationIcon = if (appState.showUpNavigation) upNavigation else null
                 )
+            },
+            bottomBar = {
+                if (appState.showBottomNavigation) {
+                    AppBottomNavigation(
+                        bottomNavOptions = AppState.BOTTOM_NAV_ITEMS,
+                        currentRoute = appState.currentRoute,
+                        onNavItemClick = { appState.onNavItemClick(it) })
+                }
             },
             content = { padding ->
                 Box(modifier = Modifier.padding(padding)) {

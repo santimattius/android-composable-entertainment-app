@@ -1,7 +1,7 @@
 package com.santimattius.template.ui.navigation
 
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
@@ -29,11 +29,11 @@ fun Navigation(
         ) {
             movieNav(
                 navController = navController,
-                width = constraints.maxWidth.div(2),
+                width = constraints.maxWidth,
             )
             tvShowNav(
                 navController = navController,
-                width = constraints.maxWidth.div(2),
+                width = constraints.maxWidth,
             )
         }
     }
@@ -67,7 +67,12 @@ private fun NavGraphBuilder.movieNav(
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { width }
-                )
+                ) + fadeIn(animationSpec = tween(1000))
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { width }
+                ) + fadeOut(animationSpec = tween(1000))
             }
         ) {
             MovieDetailRoute()

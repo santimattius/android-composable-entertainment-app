@@ -15,9 +15,10 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.net.HttpURLConnection
+import kotlin.random.Random
 
 @ExperimentalCoroutinesApi
-class MovieDataSourceIntegrationTest {
+class MovieRemoteDataSourceIntegrationTest {
 
     private val jsonLoader = JsonLoader()
     private lateinit var movieDataSource: TMDBMovieDataSource
@@ -63,6 +64,35 @@ class MovieDataSourceIntegrationTest {
 
         runBlocking {
             val result = movieDataSource.getAll()
+            assertThat(result.isFailure, equalTo(true))
+        }
+    }
+
+    @Test
+    fun findMovieByIdSuccess() {
+        val response = MockResponse()
+            .setResponseCode(HttpURLConnection.HTTP_OK)
+            .setBody(jsonLoader.load("tv_show_response"))
+
+        mockWebServer.enqueue(response)
+
+        runBlocking {
+            val result = movieDataSource.find(id = Random.nextInt())
+            assertThat(result.isSuccess, equalTo(true))
+            assertThat(result.getOrNull()?.id, equalTo(66732))
+        }
+    }
+
+    @Test
+    fun findMovieByIdFail() {
+        val response = MockResponse()
+            .setResponseCode(HttpURLConnection.HTTP_UNAUTHORIZED)
+            .setBody(jsonLoader.load("the_movie_db_response_fail"))
+
+        mockWebServer.enqueue(response)
+
+        runBlocking {
+            val result = movieDataSource.find(Random.nextInt())
             assertThat(result.isFailure, equalTo(true))
         }
     }
