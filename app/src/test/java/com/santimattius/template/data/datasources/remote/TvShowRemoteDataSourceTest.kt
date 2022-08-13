@@ -1,7 +1,7 @@
 package com.santimattius.template.data.datasources.remote
 
 import com.santimattius.template.data.client.network.TheMovieDBService
-import com.santimattius.template.data.datasources.impl.TMDBMovieDataSource
+import com.santimattius.template.data.datasources.impl.TMDBTvShowRemoteDataSource
 import com.santimattius.template.data.entities.Response
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -13,68 +13,69 @@ import org.hamcrest.core.IsEqual
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class MovieRemoteDataSourceTest {
+class TvShowRemoteDataSourceTest {
 
     private val client: TheMovieDBService = mockk()
-    private val movieDataSource = TMDBMovieDataSource(client)
+    private val dataSource = TMDBTvShowRemoteDataSource(client)
 
     @Test
     fun `get populars movie on client result is success`() {
-        val movies = TheMovieDBMother.fakeMovies()
+        val tvShows = TheMovieDBMother.fakeTvShows()
 
         coEvery {
-            client.getMoviePopular(any(), any())
-        } returns Response(results = movies)
+            client.getTvPopular(any(), any())
+        } returns Response(results = tvShows)
 
         runTest {
-            val result = movieDataSource.getAll()
+            val result = dataSource.getAll()
             assertThat(result.isSuccess, IsEqual(true))
         }
 
-        coVerify { client.getMoviePopular(any(), any()) }
+        coVerify { client.getTvPopular(any(), any()) }
     }
 
     @Test
     fun `get popular movie on client result is fail`() {
-        coEvery { client.getMoviePopular(any(), any()) } throws Throwable()
+        coEvery { client.getTvPopular(any(), any()) } throws Throwable()
+
         runTest {
-            val result = movieDataSource.getAll()
+            val result = dataSource.getAll()
             assertThat(result.isFailure, IsEqual(true))
         }
-        coVerify { client.getMoviePopular(any(), any()) }
+        coVerify { client.getTvPopular(any(), any()) }
     }
 
     @Test
     fun `find movie by id on client result is success`() {
 
-        val movie = TheMovieDBMother.fakeMovies().random()
+        val tvShow = TheMovieDBMother.fakeTvShows().random()
 
         coEvery {
-            client.getMovie(id = movie.id)
-        } returns movie
+            client.getTvShow(id = tvShow.id)
+        } returns tvShow
 
         runTest {
-            val result = movieDataSource.find(movie.id)
+            val result = dataSource.find(tvShow.id)
             assertThat(result.isSuccess, IsEqual(true))
-            assertThat(result.getOrNull(), IsEqual(movie))
+            assertThat(result.getOrNull(), IsEqual(tvShow))
         }
 
-        coVerify { client.getMovie(id = movie.id) }
+        coVerify { client.getTvShow(id = tvShow.id) }
     }
 
     @Test
     fun `find movie by id on client result is fail`() {
-        val movie = TheMovieDBMother.fakeMovies().random()
+        val tvShow = TheMovieDBMother.fakeTvShows().random()
 
         coEvery {
-            client.getMovie(id = movie.id)
+            client.getTvShow(id = tvShow.id)
         } throws Throwable()
 
         runTest {
-            val result = movieDataSource.find(movie.id)
+            val result = dataSource.find(tvShow.id)
             assertThat(result.isSuccess, IsEqual(false))
         }
 
-        coVerify { client.getMovie(id = movie.id) }
+        coVerify { client.getTvShow(id = tvShow.id) }
     }
 }

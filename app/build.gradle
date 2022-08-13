@@ -80,6 +80,10 @@ detekt {
     autoCorrect = true
 }
 
+hilt {
+    enableTransformForLocalTests = true
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

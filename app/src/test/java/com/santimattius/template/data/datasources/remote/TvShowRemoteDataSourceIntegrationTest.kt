@@ -4,6 +4,7 @@ package com.santimattius.template.data.datasources.remote
 import com.santimattius.template.data.client.network.TheMovieDBService
 import com.santimattius.template.data.client.network.service
 import com.santimattius.template.data.datasources.impl.TMDBMovieDataSource
+import com.santimattius.template.data.datasources.impl.TMDBTvShowRemoteDataSource
 import com.santimattius.template.utils.JsonLoader
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -18,10 +19,10 @@ import java.net.HttpURLConnection
 import kotlin.random.Random
 
 @ExperimentalCoroutinesApi
-class MovieRemoteDataSourceIntegrationTest {
+class TvShowRemoteDataSourceIntegrationTest {
 
     private val jsonLoader = JsonLoader()
-    private lateinit var movieDataSource: TMDBMovieDataSource
+    private lateinit var dataSource: TMDBTvShowRemoteDataSource
     private lateinit var mockWebServer: MockWebServer
 
 
@@ -31,7 +32,7 @@ class MovieRemoteDataSourceIntegrationTest {
         mockWebServer.start()
         val baseUrl = mockWebServer.url("/").toUri().toString()
         val client = service<TheMovieDBService>(baseUrl = baseUrl)
-        movieDataSource = TMDBMovieDataSource(client)
+        dataSource = TMDBTvShowRemoteDataSource(client)
     }
 
     @After
@@ -40,22 +41,22 @@ class MovieRemoteDataSourceIntegrationTest {
     }
 
     @Test
-    fun getMoviePopularSuccess() {
+    fun getTvShowsPopularSuccess() {
         val response = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_OK)
-            .setBody(jsonLoader.load("movie_popular_response_success"))
+            .setBody(jsonLoader.load("tv_popular_response_success"))
 
         mockWebServer.enqueue(response)
 
         runBlocking {
-            val result = movieDataSource.getAll()
+            val result = dataSource.getAll()
             assertThat(result.isSuccess, equalTo(true))
             assertThat(result.getOrNull()?.isNotEmpty(), equalTo(true))
         }
     }
 
     @Test
-    fun getMoviePopularFail() {
+    fun getTvShowsPopularFail() {
         val response = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_UNAUTHORIZED)
             .setBody(jsonLoader.load("the_movie_db_response_fail"))
@@ -63,28 +64,28 @@ class MovieRemoteDataSourceIntegrationTest {
         mockWebServer.enqueue(response)
 
         runBlocking {
-            val result = movieDataSource.getAll()
+            val result = dataSource.getAll()
             assertThat(result.isFailure, equalTo(true))
         }
     }
 
     @Test
-    fun findMovieByIdSuccess() {
+    fun findTvShowByIdSuccess() {
         val response = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_OK)
-            .setBody(jsonLoader.load("movie_response"))
+            .setBody(jsonLoader.load("tv_show_response"))
 
         mockWebServer.enqueue(response)
 
         runBlocking {
-            val result = movieDataSource.find(id = Random.nextInt())
+            val result = dataSource.find(id = Random.nextInt())
             assertThat(result.isSuccess, equalTo(true))
-            assertThat(result.getOrNull()?.id, equalTo(508947))
+            assertThat(result.getOrNull()?.id, equalTo(66732))
         }
     }
 
     @Test
-    fun findMovieByIdFail() {
+    fun findTvShowByIdFail() {
         val response = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_UNAUTHORIZED)
             .setBody(jsonLoader.load("the_movie_db_response_fail"))
@@ -92,7 +93,7 @@ class MovieRemoteDataSourceIntegrationTest {
         mockWebServer.enqueue(response)
 
         runBlocking {
-            val result = movieDataSource.find(Random.nextInt())
+            val result = dataSource.find(Random.nextInt())
             assertThat(result.isFailure, equalTo(true))
         }
     }

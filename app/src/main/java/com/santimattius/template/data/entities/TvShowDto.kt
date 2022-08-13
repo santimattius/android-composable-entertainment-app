@@ -14,7 +14,7 @@ data class TvShowDto(
     @Json(name = "poster_path")
     val posterPath: String = "",
     @Json(name = "origin_country")
-    val originCountry: List<String>?,
+    val originCountry: List<String>? = emptyList(),
     @Json(name = "backdrop_path")
     val backdropPath: String = "",
     @Json(name = "original_name")

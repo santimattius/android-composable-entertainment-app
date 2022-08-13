@@ -1,10 +1,11 @@
-package com.santimattius.template.ui.home.viewmodels
+package com.santimattius.template.data
 
+import com.santimattius.template.data.datasources.remote.TheMovieDBMother
 import com.santimattius.template.domain.entities.Movie
 import com.santimattius.template.domain.repositories.MovieRepository
 
-class FakeMovieRepository(
-    private val answers: () -> List<Movie> = { emptyList() },
+class FakeMovieRepository @JvmOverloads constructor(
+    private val answers: () -> List<Movie> = { TheMovieDBMother.movies().dtoToDomain() },
     private val result: () -> Result<List<Movie>> = { Result.success(answers()) },
 ) : MovieRepository {
 

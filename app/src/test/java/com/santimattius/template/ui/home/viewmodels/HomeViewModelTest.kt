@@ -1,6 +1,7 @@
 package com.santimattius.template.ui.home.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.santimattius.template.data.FakeMovieRepository
 import com.santimattius.template.domain.usecases.FetchPopularMovies
 import com.santimattius.template.domain.usecases.GetPopularMovies
 import com.santimattius.template.ui.home.movies.PopularMoviesViewModel

@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.santimattius.template.data.client.database.AppDataBase
-import com.santimattius.template.data.datasources.MovieEntityMother
 import com.santimattius.template.data.datasources.impl.RoomMovieDataSource
 import com.santimattius.template.utils.MainCoroutinesTestRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi

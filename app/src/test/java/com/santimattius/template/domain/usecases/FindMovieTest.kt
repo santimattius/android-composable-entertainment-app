@@ -1,8 +1,8 @@
 package com.santimattius.template.domain.usecases
 
-import com.santimattius.template.data.datasources.MovieEntityMother
+import com.santimattius.template.data.datasources.local.MovieEntityMother
 import com.santimattius.template.data.entityToDomain
-import com.santimattius.template.ui.home.viewmodels.FakeMovieRepository
+import com.santimattius.template.data.FakeMovieRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.nullValue

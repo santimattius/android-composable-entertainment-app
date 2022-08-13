@@ -10,9 +10,15 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.santimattius.template.di.DataModule
 import com.santimattius.template.ui.MainActivity
 import com.santimattius.template.utils.MainCoroutinesTestRule
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.HiltTestApplication
+import dagger.hilt.android.testing.UninstallModules
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,13 +27,19 @@ import org.robolectric.annotation.Config
 @ExperimentalAnimationApi
 @ExperimentalLifecycleComposeApi
 @ExperimentalCoroutinesApi
+@UninstallModules(DataModule::class)
+@HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 @Config(
     manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.R],
-    instrumentedPackages = ["androidx.loader.content"]
+    instrumentedPackages = ["androidx.loader.content"],
+    application = HiltTestApplication::class
 )
 class MainActivityAndroidXTest {
+
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -38,12 +50,10 @@ class MainActivityAndroidXTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-//    @get:Rule
-//    val koinRule = KoinRule.androidx(module = module {
-//        single<MovieRepository> {
-//            FakeMovieRepository(answers = { TheMovieDBMother.movies().dtoToDomain() })
-//        }
-//    })
+    @Before
+    fun init() {
+        hiltRule.inject()
+    }
 
     @Test
     fun `verify first movie is spider-man`() {
