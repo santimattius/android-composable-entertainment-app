@@ -2,8 +2,8 @@ package com.santimattius.template.ui.home.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.santimattius.template.data.FakeMovieRepository
-import com.santimattius.template.domain.usecases.FetchPopularMovies
-import com.santimattius.template.domain.usecases.GetPopularMovies
+import com.santimattius.template.domain.usecases.movies.FetchPopularMovies
+import com.santimattius.template.domain.usecases.movies.GetPopularMovies
 import com.santimattius.template.ui.home.movies.PopularMoviesViewModel
 import com.santimattius.template.ui.home.movies.PopularMoviesScreenState
 import com.santimattius.template.utils.MainCoroutinesTestRule
@@ -16,7 +16,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class HomeViewModelTest {
+class PopularMoviesViewModelTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()

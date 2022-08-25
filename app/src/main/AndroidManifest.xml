@@ -18,8 +18,29 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter android:label="Movies">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="home"
+                    android:pathPrefix="/detail"
+                    android:scheme="entertainment" />
+            </intent-filter>
+            <intent-filter android:label="TvShows">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tv_shows"
+                    android:pathPrefix="/detail"
+                    android:scheme="entertainment" />
             </intent-filter>
         </activity>
     </application>

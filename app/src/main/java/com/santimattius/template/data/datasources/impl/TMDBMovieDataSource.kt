@@ -7,13 +7,11 @@ internal class TMDBMovieDataSource(
     private val service: TheMovieDBService,
 ) : MovieRemoteDataSource {
 
-    @Suppress("TooGenericExceptionCaught")
     override suspend fun getAll() = runCatching {
         val response = service.getMoviePopular(page = SINGLE_PAGE)
         response.results
     }
 
-    //TODO:add tests
     override suspend fun find(id: Int) = runCatching {
         service.getMovie(id = id)
     }

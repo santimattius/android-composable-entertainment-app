@@ -3,8 +3,8 @@ package com.santimattius.template.ui.home.movies
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.santimattius.template.domain.entities.Movie
-import com.santimattius.template.domain.usecases.FetchPopularMovies
-import com.santimattius.template.domain.usecases.GetPopularMovies
+import com.santimattius.template.domain.usecases.movies.FetchPopularMovies
+import com.santimattius.template.domain.usecases.movies.GetPopularMovies
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job

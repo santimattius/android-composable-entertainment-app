@@ -3,6 +3,8 @@ package com.santimattius.template.data.repositories
 import com.santimattius.template.data.datasources.TvShowLocalDataSource
 import com.santimattius.template.data.datasources.TvShowRemoteDataSource
 import com.santimattius.template.data.dtoToDomain
+import com.santimattius.template.data.dtoToEntity
+import com.santimattius.template.data.entityToDomain
 import com.santimattius.template.domain.entities.TvShow
 import com.santimattius.template.domain.repositories.TvShowsRepository
 
@@ -12,29 +14,33 @@ class TvShowsRepositoryImpl(
 ) : TvShowsRepository {
 
     override suspend fun getPopular(): List<TvShow> {
-        return remoteDataSource.getAll()
-            .fold(onSuccess = {
-                it.dtoToDomain()
-            }, onFailure = {
-                emptyList()
-            })
+        val all = localDataSource.getAll()
+        return if (all.isEmpty()) {
+            val remotes = remoteDataSource.getAll().getOrDefault(emptyList())
+            localDataSource.save(remotes.dtoToEntity())
+            remotes.dtoToDomain()
+        } else {
+            all.entityToDomain()
+        }
     }
 
     override suspend fun fetchPopular(): Result<List<TvShow>> {
         return remoteDataSource.getAll()
-            .fold(onSuccess = {
-                Result.success(it.dtoToDomain())
+            .fold(onSuccess = { remotes ->
+                localDataSource.save(remotes.dtoToEntity())
+                Result.success(remotes.dtoToDomain())
             }, onFailure = {
-                Result.failure(it)
+                Result.success(localDataSource.getAll().entityToDomain())
             })
     }
 
     override suspend fun find(id: Int): TvShow? {
-        return remoteDataSource.find(id)
+        return localDataSource.find(id)
             .fold(onSuccess = {
-                it.dtoToDomain()
+                it.entityToDomain()
             }, onFailure = {
-                null
+                val result = remoteDataSource.find(id)
+                result.getOrNull()?.dtoToDomain()
             })
     }
 }

@@ -1,6 +1,7 @@
-package com.santimattius.template.domain.usecases
+package com.santimattius.template.domain.usecases.movies
 
 import com.santimattius.template.data.FakeMovieRepository
+import com.santimattius.template.domain.usecases.movies.GetPopularMovies
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat

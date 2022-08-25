@@ -9,6 +9,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.navDeepLink
 import com.google.accompanist.navigation.animation.composable
 
 
@@ -32,7 +33,7 @@ fun NavHostController.navigatePoppingUpToStartDestination(route: String) {
 
 @ExperimentalAnimationApi
 internal fun NavGraphBuilder.composable(
-    navItem: NavCommand,
+    navCommand: NavCommand,
     enterTransition: AnimatedEnterTransition? = null,
     exitTransition: AnimatedExitTransition? = null,
     popEnterTransition: AnimatedEnterTransition? = enterTransition,
@@ -40,8 +41,11 @@ internal fun NavGraphBuilder.composable(
     content: @Composable (NavBackStackEntry) -> Unit,
 ) {
     composable(
-        route = navItem.route,
-        arguments = navItem.args,
+        route = navCommand.route,
+        arguments = navCommand.args,
+        deepLinks = listOf(navDeepLink {
+            uriPattern = "entertainment://${navCommand.route}"
+        }),
         enterTransition = enterTransition,
         exitTransition = exitTransition,
         popEnterTransition = popEnterTransition,

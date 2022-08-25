@@ -13,7 +13,7 @@ class FakeMovieRepository @JvmOverloads constructor(
 
     override suspend fun fetchPopular() = result()
 
-    override suspend fun findMovie(id: Int): Movie? {
+    override suspend fun find(id: Int): Movie? {
         return getPopular().firstOrNull { it.id == id }
     }
 }

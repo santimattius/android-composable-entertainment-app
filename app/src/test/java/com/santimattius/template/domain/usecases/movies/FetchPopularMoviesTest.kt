@@ -1,7 +1,8 @@
-package com.santimattius.template.domain.usecases
+package com.santimattius.template.domain.usecases.movies
 
 import com.santimattius.template.data.repositories.RefreshMovieFailed
 import com.santimattius.template.domain.repositories.MovieRepository
+import com.santimattius.template.domain.usecases.movies.FetchPopularMovies
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -13,6 +14,7 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class FetchPopularMoviesTest {
+
     private val repository = mockk<MovieRepository>(relaxed = true)
     private val fetchPopularMovies = FetchPopularMovies(repository)
 

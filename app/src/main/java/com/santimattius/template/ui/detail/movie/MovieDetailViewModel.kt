@@ -3,7 +3,7 @@ package com.santimattius.template.ui.detail.movie
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.santimattius.template.domain.usecases.FindMovie
+import com.santimattius.template.domain.usecases.movies.FindMovie
 import com.santimattius.template.ui.navigation.NavArg
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job

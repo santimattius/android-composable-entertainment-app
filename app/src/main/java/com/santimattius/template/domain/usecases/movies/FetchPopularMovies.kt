@@ -1,4 +1,4 @@
-package com.santimattius.template.domain.usecases
+package com.santimattius.template.domain.usecases.movies
 
 import com.santimattius.template.domain.repositories.MovieRepository
 

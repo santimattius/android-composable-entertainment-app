@@ -45,12 +45,12 @@ fun EntertainmentApp(
                 )
             },
             bottomBar = {
-                if (appState.showBottomNavigation) {
+//                if (appState.showBottomNavigation) {
                     AppBottomNavigation(
                         bottomNavOptions = AppState.BOTTOM_NAV_ITEMS,
                         currentRoute = appState.currentRoute,
                         onNavItemClick = { appState.onNavItemClick(it) })
-                }
+//                }
             },
             content = { padding ->
                 Box(modifier = Modifier.padding(padding)) {

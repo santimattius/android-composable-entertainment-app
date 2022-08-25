@@ -28,7 +28,7 @@ internal class MoviesRepositoryImpl(
         Result.failure(RefreshMovieFailed())
     })
 
-    override suspend fun findMovie(id: Int): Movie? {
+    override suspend fun find(id: Int): Movie? {
         return movieLocalDataSource.find(id).fold(
             onSuccess = {
                 it.entityToDomain()
@@ -39,4 +39,5 @@ internal class MoviesRepositoryImpl(
             }
         )
     }
+
 }

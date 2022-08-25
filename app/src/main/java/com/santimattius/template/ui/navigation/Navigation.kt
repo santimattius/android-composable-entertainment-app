@@ -50,7 +50,7 @@ private fun NavGraphBuilder.movieNav(
         route = Feature.MOVIES.route
     ) {
         composable(
-            navItem = NavCommand.ContentType(Feature.MOVIES),
+            navCommand = NavCommand.ContentType(Feature.MOVIES),
         ) {
             PopularMoviesRoute(
                 onMovieClick = { movie ->
@@ -63,7 +63,7 @@ private fun NavGraphBuilder.movieNav(
             )
         }
         composable(
-            navItem = NavCommand.ContentTypeDetail(Feature.MOVIES),
+            navCommand = NavCommand.ContentTypeDetail(Feature.MOVIES),
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { width }
@@ -91,7 +91,7 @@ private fun NavGraphBuilder.tvShowNav(
         route = Feature.TV_SHOWS.route
     ) {
         composable(
-            navItem = NavCommand.ContentType(Feature.TV_SHOWS),
+            navCommand = NavCommand.ContentType(Feature.TV_SHOWS),
         ) {
             PopularTvShowsRoute(
                 onTvShowClick = { tvShow ->
@@ -104,7 +104,7 @@ private fun NavGraphBuilder.tvShowNav(
             )
         }
         composable(
-            navItem = NavCommand.ContentTypeDetail(Feature.TV_SHOWS),
+            navCommand = NavCommand.ContentTypeDetail(Feature.TV_SHOWS),
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { width }

@@ -2,9 +2,9 @@ package com.santimattius.template.di
 
 import com.santimattius.template.domain.repositories.MovieRepository
 import com.santimattius.template.domain.repositories.TvShowsRepository
-import com.santimattius.template.domain.usecases.FetchPopularMovies
-import com.santimattius.template.domain.usecases.FindMovie
-import com.santimattius.template.domain.usecases.GetPopularMovies
+import com.santimattius.template.domain.usecases.movies.FetchPopularMovies
+import com.santimattius.template.domain.usecases.movies.FindMovie
+import com.santimattius.template.domain.usecases.movies.GetPopularMovies
 import com.santimattius.template.domain.usecases.tvshows.FetchPopularTvShows
 import com.santimattius.template.domain.usecases.tvshows.FindTvShow
 import com.santimattius.template.domain.usecases.tvshows.GetPopularTvShows
