@@ -15,6 +15,7 @@ import com.santimattius.template.ui.detail.movie.MovieDetailRoute
 import com.santimattius.template.ui.detail.tvshow.TvShowDetailRoute
 import com.santimattius.template.ui.home.movies.PopularMoviesRoute
 import com.santimattius.template.ui.home.tvshows.PopularTvShowsRoute
+import com.santimattius.template.ui.splash.SplashRoute
 
 @ExperimentalLifecycleComposeApi
 @ExperimentalAnimationApi
@@ -25,8 +26,12 @@ fun Navigation(
     BoxWithConstraints {
         AnimatedNavHost(
             navController = navController,
-            startDestination = Feature.MOVIES.route
+            startDestination = Feature.SPLASH.route
         ) {
+            splashNav(
+                navController = navController,
+                width = constraints.maxWidth,
+            )
             movieNav(
                 navController = navController,
                 width = constraints.maxWidth,
@@ -35,6 +40,30 @@ fun Navigation(
                 navController = navController,
                 width = constraints.maxWidth,
             )
+        }
+    }
+}
+
+@ExperimentalLifecycleComposeApi
+@ExperimentalAnimationApi
+private fun NavGraphBuilder.splashNav(
+    navController: NavController,
+    width: Int,
+) {
+    navigation(
+        startDestination = NavCommand.ContentType(Feature.SPLASH).route,
+        route = Feature.SPLASH.route
+    ) {
+        composable(
+            navCommand = NavCommand.ContentType(Feature.SPLASH)
+        ) {
+            SplashRoute(
+                navigate = {
+                    with(navController) {
+                        popBackStack()
+                        navigate(Feature.MOVIES.route)
+                    }
+                })
         }
     }
 }

@@ -34,10 +34,9 @@ project.ext {
     //Moshi
     moshi_version = '1.13.0'
 
-    //Glide
-    glide_version = '4.13.2'
+    //Image loaders
     coil_version = '2.1.0'
-
+    lottie_version = '5.2.0'
     //DI
     koin_version = '3.2.0'
 

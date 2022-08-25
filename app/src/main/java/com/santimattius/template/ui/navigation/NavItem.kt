@@ -14,7 +14,7 @@ enum class NavItem(
     val icon: ImageVector,
     @StringRes val title: Int,
 ) {
-    HOME(NavCommand.ContentType(Feature.MOVIES), Icons.Filled.Movie, R.string.movie),
+    MOVIE(NavCommand.ContentType(Feature.MOVIES), Icons.Filled.Movie, R.string.movie),
     TV(NavCommand.ContentType(Feature.TV_SHOWS), Icons.Filled.LiveTv, R.string.tv),
 }
 

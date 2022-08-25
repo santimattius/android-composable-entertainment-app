@@ -9,11 +9,13 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.santimattius.template.R
 import com.santimattius.template.ui.components.AppBar
 import com.santimattius.template.ui.components.AppBarIcon
@@ -39,18 +41,20 @@ fun EntertainmentApp(
     EntertainmentScreen {
         Scaffold(
             topBar = {
-                AppBar(
-                    title = { Text(stringResource(id = R.string.title_app)) },
-                    navigationIcon = if (appState.showUpNavigation) upNavigation else null
-                )
+                if (appState.showTopAppBar) {
+                    AppBar(
+                        title = { Text(stringResource(id = R.string.title_app)) },
+                        navigationIcon = if (appState.showUpNavigation) upNavigation else null
+                    )
+                }
             },
             bottomBar = {
-//                if (appState.showBottomNavigation) {
+                if (appState.showBottomNavigation) {
                     AppBottomNavigation(
                         bottomNavOptions = AppState.BOTTOM_NAV_ITEMS,
                         currentRoute = appState.currentRoute,
                         onNavItemClick = { appState.onNavItemClick(it) })
-//                }
+                }
             },
             content = { padding ->
                 Box(modifier = Modifier.padding(padding)) {
@@ -58,9 +62,31 @@ fun EntertainmentApp(
                 }
             }
         )
+        SetStatusBarColorEffect(
+            color = if (appState.isFullScreen) {
+                Color.Transparent
+            } else {
+                MaterialTheme.colors.primaryVariant
+            }
+        )
     }
 }
 
+@Composable
+fun SetStatusBarColorEffect(
+    color: Color = MaterialTheme.colors.primaryVariant,
+) {
+    // Remember a SystemUiController
+    val systemUiController = rememberSystemUiController()
+
+    SideEffect {
+        systemUiController.setStatusBarColor(
+            color = color,
+            darkIcons = color == Color.Transparent
+        )
+    }
+
+}
 
 @Composable
 fun EntertainmentScreen(content: @Composable () -> Unit) {

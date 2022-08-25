@@ -10,6 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.santimattius.template.ui.navigation.Feature
 import com.santimattius.template.ui.navigation.NavItem
 import com.santimattius.template.ui.navigation.navigatePoppingUpToStartDestination
 import kotlinx.coroutines.CoroutineScope
@@ -31,21 +32,36 @@ class AppState(
 ) {
 
     companion object {
-        val BOTTOM_NAV_ITEMS = listOf(NavItem.HOME, NavItem.TV)
+        val BOTTOM_NAV_ITEMS = listOf(NavItem.MOVIE, NavItem.TV)
+        val HOME_ROUTES = listOf(NavItem.MOVIE.navCommand.route, NavItem.TV.navCommand.route)
     }
+
+    val isFullScreen: Boolean
+        @Composable get() = !currentRoute.notContainsRoute(Feature.SPLASH)
 
     val currentRoute: String
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination?.route
             ?: ""
 
     val showUpNavigation: Boolean
-        @Composable get() = !NavItem.values().map { it.navCommand.route }.contains(currentRoute)
+        @Composable get() = !HOME_ROUTES.contains(currentRoute)
 
     val showBottomNavigation: Boolean
-        @Composable get() = BOTTOM_NAV_ITEMS.any { currentRoute.contains(it.navCommand.feature.route) }
+        @Composable get() = currentRoute.notContainsRoute(Feature.SPLASH)
+
+    val showTopAppBar: Boolean
+        @Composable get() = currentRoute.notContainsRoute(Feature.SPLASH)
 
     fun onUpClick() {
         navController.popBackStack()
+    }
+
+    private fun String.notContainsRoute(feature: Feature): Boolean {
+        return if (isBlank()) {
+            false
+        } else {
+            !contains(feature.route)
+        }
     }
 
     fun onNavItemClick(navItem: NavItem) {
