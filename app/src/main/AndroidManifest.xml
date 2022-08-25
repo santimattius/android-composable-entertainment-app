@@ -14,27 +14,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EntertainmentApp">
         <activity
-            android:name=".ui.home.MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.detail.MovieDetailActivity"
-            android:exported="true">
-            <intent-filter>
+            <intent-filter android:label="Movies">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="movie"
-                    android:scheme="app" />
+                    android:host="home"
+                    android:pathPrefix="/detail"
+                    android:scheme="entertainment" />
+            </intent-filter>
+            <intent-filter android:label="TvShows">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tv_shows"
+                    android:pathPrefix="/detail"
+                    android:scheme="entertainment" />
             </intent-filter>
         </activity>
     </application>

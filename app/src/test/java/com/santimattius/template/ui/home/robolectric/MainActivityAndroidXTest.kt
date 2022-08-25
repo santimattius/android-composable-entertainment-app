@@ -3,38 +3,43 @@ package com.santimattius.template.ui.home.robolectric
 
 import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.santimattius.template.R
-import com.santimattius.template.data.dtoToDomain
-import com.santimattius.template.domain.repositories.MovieRepository
-import com.santimattius.template.ui.home.MainActivity
-import com.santimattius.template.ui.home.viewmodels.FakeMovieRepository
-import com.santimattius.template.utils.KoinRule
+import com.santimattius.template.di.DataModule
+import com.santimattius.template.ui.MainActivity
 import com.santimattius.template.utils.MainCoroutinesTestRule
-import com.santimattius.template.utils.TheMovieDBMother
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.HiltTestApplication
+import dagger.hilt.android.testing.UninstallModules
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.dsl.module
-import org.koin.test.KoinTest
 import org.robolectric.annotation.Config
 
+@ExperimentalAnimationApi
 @ExperimentalLifecycleComposeApi
 @ExperimentalCoroutinesApi
+@UninstallModules(DataModule::class)
+@HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 @Config(
     manifest = Config.NONE,
     sdk = [Build.VERSION_CODES.R],
-    instrumentedPackages = ["androidx.loader.content"]
+    instrumentedPackages = ["androidx.loader.content"],
+    application = HiltTestApplication::class
 )
-class MainActivityAndroidXTest : KoinTest {
+class MainActivityAndroidXTest {
+
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -45,12 +50,10 @@ class MainActivityAndroidXTest : KoinTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    @get:Rule
-    val koinRule = KoinRule.androidx(module = module {
-        single<MovieRepository> {
-            FakeMovieRepository(answers = { TheMovieDBMother.movies().dtoToDomain() })
-        }
-    })
+    @Before
+    fun init() {
+        hiltRule.inject()
+    }
 
     @Test
     fun `verify first movie is spider-man`() {

@@ -1,4 +1,4 @@
-package com.santimattius.template.ui.home.components
+package com.santimattius.template.ui.components
 
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.santimattius.template.R
-import com.santimattius.template.ui.components.AlertDialog
 
 @Composable
 fun ErrorDialog(

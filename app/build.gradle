@@ -1,8 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
     id 'io.gitlab.arturbosch.detekt'
-    id 'com.google.devtools.ksp' version "$ksp_version"
+    id 'dagger.hilt.android.plugin'
 }
 
 apply from: "$rootDir/gradle/report.gradle"
@@ -39,15 +40,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-
-    viewBinding {
-        enabled = true
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     testOptions {
@@ -65,18 +62,14 @@ android {
     buildFeatures {
         compose true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion '1.2.0'
     }
+
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
-    }
-
-    applicationVariants.all { variant ->
-        variant.sourceSets.java.each {
-            it.srcDirs += "build/generated/ksp/${variant.name}/kotlin"
         }
     }
 }
@@ -85,6 +78,10 @@ detekt {
     config = files("${project.rootDir}/config/detekt/detekt.yml")
     baseline = file("$rootDir/detekt-baseline.xml")
     autoCorrect = true
+}
+
+hilt {
+    enableTransformForLocalTests = true
 }
 
 dependencies {
@@ -98,7 +95,7 @@ dependencies {
     lifecycle()
     imageLoader()
     room()
-    koin()
+    hiltGroup()
 
     coroutines()
     networking()
@@ -107,4 +104,8 @@ dependencies {
     mockk()
     robolectric()
     androidTesting()
+}
+
+kapt {
+    correctErrorTypes true
 }
