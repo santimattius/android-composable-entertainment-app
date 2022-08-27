@@ -18,8 +18,11 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.santimattius.template.R
 import com.santimattius.template.domain.entities.Entertainment
-import com.santimattius.template.ui.components.*
-
+import com.santimattius.template.ui.components.CardGridItem
+import com.santimattius.template.ui.components.UiState
+import com.santimattius.template.ui.components.ErrorDialog
+import com.santimattius.template.ui.components.AlertDialog
+import com.santimattius.template.ui.components.Center
 
 @Composable
 internal fun <T> HomeScaffold(

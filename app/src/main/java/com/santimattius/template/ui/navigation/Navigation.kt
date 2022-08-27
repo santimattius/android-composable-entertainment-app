@@ -17,6 +17,9 @@ import com.santimattius.template.ui.home.movies.PopularMoviesRoute
 import com.santimattius.template.ui.home.tvshows.PopularTvShowsRoute
 import com.santimattius.template.ui.splash.SplashRoute
 
+
+private const val TWEEN_ANIM_DURATION = 1000
+
 @ExperimentalLifecycleComposeApi
 @ExperimentalAnimationApi
 @Composable
@@ -30,7 +33,6 @@ fun Navigation(
         ) {
             splashNav(
                 navController = navController,
-                width = constraints.maxWidth,
             )
             movieNav(
                 navController = navController,
@@ -48,7 +50,6 @@ fun Navigation(
 @ExperimentalAnimationApi
 private fun NavGraphBuilder.splashNav(
     navController: NavController,
-    width: Int,
 ) {
     navigation(
         startDestination = NavCommand.ContentType(Feature.SPLASH).route,
@@ -96,12 +97,12 @@ private fun NavGraphBuilder.movieNav(
             enterTransition = {
                 slideInHorizontally(
                     initialOffsetX = { width }
-                ) + fadeIn(animationSpec = tween(1000))
+                ) + fadeIn(animationSpec = tween(TWEEN_ANIM_DURATION))
             },
             exitTransition = {
                 slideOutHorizontally(
                     targetOffsetX = { width }
-                ) + fadeOut(animationSpec = tween(1000))
+                ) + fadeOut(animationSpec = tween(TWEEN_ANIM_DURATION))
             }
         ) {
             MovieDetailRoute()

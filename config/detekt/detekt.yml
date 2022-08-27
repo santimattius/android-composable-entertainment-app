@@ -680,4 +680,6 @@ style:
     excludeImports:
       - 'java.util.*'
       - 'androidx.compose.foundation.layout.*'
+      - 'androidx.compose.animation.*'
       - 'androidx.compose.material.*'
+      - 'androidx.room.*'
