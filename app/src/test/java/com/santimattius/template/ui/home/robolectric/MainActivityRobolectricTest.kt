@@ -17,6 +17,7 @@ import dagger.hilt.android.testing.HiltTestApplication
 import dagger.hilt.android.testing.UninstallModules
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -55,6 +56,7 @@ class MainActivityRobolectricTest {
     }
 
     @Test
+    @Ignore
     fun `verify first movie is spider-man`() {
         ActivityScenario.launch(MainActivity::class.java).use {
             composeTestRule
