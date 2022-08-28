@@ -5,9 +5,6 @@ project.ext {
     kotlin_coroutines_version = '1.6.4'
     coroutines_test_version = '1.6.4'
 
-    //KSP
-    ksp_version = '1.7.0-1.0.6'
-
     //UI
     appcompat_version = '1.4.2'
     legacy_support_version = '1.0.0'
@@ -16,10 +13,16 @@ project.ext {
     constraint_layout_version = '2.1.4'
     material_version = '1.6.1'
 
+    //Compose
+    compose_version = '1.2.0-rc03'
+    accompanist_version = '0.24.13-rc'
+
+
     //Ktx
     core_ktx_version = '1.8.0'
     //Arch
-    lifecycle_ktx_version = '2.5.0'
+    lifecycle_version = '2.6.0-alpha01'
+    lifecycle_compose_version = '2.6.0-alpha01'
 
     //Retrofit
     retrofit_version = '2.9.0'
@@ -31,11 +34,17 @@ project.ext {
     //Moshi
     moshi_version = '1.13.0'
 
-    //Glide
-    glide_version = '4.13.2'
-
+    //Image loaders
+    coil_version = '2.1.0'
+    lottie_version = '5.2.0'
     //DI
-    koin_version= '3.2.0'
+    koin_version = '3.2.0'
+
+    //Hilt
+    dagger_hilt_version = '2.43.1'
+    hilt_viewmodel_version = '1.0.0-alpha03'
+    hilt_navigation_version = '1.0.0'
+    hilt_compiler = '1.0.0'
 
     jacoco_version = '0.8.8'
     detekt_version = '1.21.0'

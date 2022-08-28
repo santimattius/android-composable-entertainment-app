@@ -5,8 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.santimattius.template.data.entities.MovieEntity
+import com.santimattius.template.data.entities.TvShowEntity
 
-@Database(entities = [MovieEntity::class], version = 1, exportSchema = false)
+@Database(entities = [MovieEntity::class, TvShowEntity::class], version = 1, exportSchema = false)
 abstract class AppDataBase : RoomDatabase() {
 
     companion object {
@@ -18,5 +19,6 @@ abstract class AppDataBase : RoomDatabase() {
                 .build()
     }
 
-    abstract fun dao(): MovieDao
+    abstract fun movieDao(): MovieDao
+    abstract fun tvShowDao(): TvShowDao
 }

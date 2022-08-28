@@ -7,4 +7,6 @@ interface MovieRepository {
     suspend fun getPopular(): List<Movie>
 
     suspend fun fetchPopular(): Result<List<Movie>>
+
+    suspend fun find(id: Int): Movie?
 }

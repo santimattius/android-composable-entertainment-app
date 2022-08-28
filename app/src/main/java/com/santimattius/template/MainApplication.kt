@@ -1,12 +1,7 @@
 package com.santimattius.template
 
 import android.app.Application
-import com.santimattius.template.di.AppConfiguration
+import dagger.hilt.android.HiltAndroidApp
 
-class MainApplication : Application() {
-
-    override fun onCreate() {
-        super.onCreate()
-        AppConfiguration.init(app = this)
-    }
-}
+@HiltAndroidApp
+class MainApplication : Application()

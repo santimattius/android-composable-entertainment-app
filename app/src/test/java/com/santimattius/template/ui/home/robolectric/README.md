@@ -31,7 +31,7 @@ version 4.0. As such we encourage you to try these new APIs and provide feedback
 Robolectric equivalents will be deprecated and removed. Using the AndroidX Test APIs reduces the
 cognitive load for you as a developer, with just one set of APIs to learn for the same Android
 concept, no matter if you are writing an Robolectric test or an instrumentation test. Furthermore it
-will make your tests more portable and compatible with our future plans. 
+will make your tests more portable and compatible with our future plans.
 
 **TestRunner**
 It is now possible to use the AndroidX test runner in Robolectric tests. If you require a custom
@@ -39,3 +39,31 @@ test runner currently, please check out the new configuration and plugin API and
 there are any extension points missing that you require.
 
 See more [here](http://robolectric.org/androidx_test/)
+
+## Android Test with Compose
+
+Using compose Rule.
+
+```kotlin
+@RunWith(AndroidJUnit4::class)
+@Config(
+    manifest = Config.NONE,
+    sdk = [Build.VERSION_CODES.R],
+    instrumentedPackages = ["androidx.loader.content"]
+)
+class HomeFragmentTest : KoinTest {
+    
+    @get:Rule
+    val composeTestRule = createComposeRule()
+
+    @Test
+    fun `verify first movie is spider-man`() {
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            composeTestRule
+                .onNodeWithTag("Spider-Man: No Way Home").assertIsDisplayed()
+
+        }
+    }
+}
+```
